@@ -1,0 +1,17 @@
+# Enforce LF endings for all text files (critical for Linux CI/CD compatibility)
+* text=auto
+
+# Explicitly mark files that MUST use LF
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+.nojekyll text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.svg text
+*.mp4 binary
