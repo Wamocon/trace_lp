@@ -11,7 +11,12 @@ const fs   = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const read = (file) => fs.readFileSync(path.join(ROOT, file), 'utf8');
+const DOCS = path.join(ROOT, 'docs');
+const read = (file) => {
+  const docsPath = path.join(DOCS, file);
+  if (fs.existsSync(docsPath)) return fs.readFileSync(docsPath, 'utf8');
+  return fs.readFileSync(path.join(ROOT, file), 'utf8');
+};
 
 // ── 1. Pflichtdateien vorhanden ─────────────────────────────────────────────
 describe('Pflichtdateien', () => {
@@ -25,7 +30,9 @@ describe('Pflichtdateien', () => {
     'impressum.html',
     '.gitignore',
   ])('%s ist vorhanden', (file) => {
-    expect(fs.existsSync(path.join(ROOT, file))).toBe(true);
+    const isDoc = !file.startsWith('.');
+    const fullPath = isDoc ? path.join(DOCS, file) : path.join(ROOT, file);
+    expect(fs.existsSync(fullPath)).toBe(true);
   });
 });
 
