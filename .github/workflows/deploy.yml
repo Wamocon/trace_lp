@@ -25,12 +25,27 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Create dist directory
         run: |
-          chmod +x scripts/prepare_deploy.sh
-          ./scripts/prepare_deploy.sh
+          mkdir -p dist
+          # Copy only the necessary public files
+          cp index.html dist/
+          cp agb.html dist/
+          cp cookies.html dist/
+          cp datenschutz.html dist/
+          cp impressum.html dist/
+          # Copy CSS, JS and Image assets (using glob)
+          cp *.css dist/ 2>/dev/null || echo "No CSS files"
+          cp *.js dist/ 2>/dev/null || echo "No JS files"
+          cp *.png dist/ 2>/dev/null || echo "No PNG files"
+          cp *.svg dist/ 2>/dev/null || echo "No SVG files"
+          # Ensure .nojekyll is present
+          touch dist/.nojekyll
+          # Explicitly remove unwanted files if copied by glob (safety)
+          rm -f dist/PRAESENTATION_SKRIPT.html
+          rm -f dist/intro.mp4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
