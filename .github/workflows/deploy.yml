@@ -27,11 +27,16 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Create dist directory
+        run: |
+          chmod +x scripts/prepare_deploy.sh
+          ./scripts/prepare_deploy.sh
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Select the root directory to upload
-          path: '.'
+          # Select the dist directory to upload
+          path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
