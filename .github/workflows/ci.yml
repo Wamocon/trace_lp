@@ -1,5 +1,5 @@
 name: CI – Regression & Checks
-# last updated: 2026-03-15
+# last updated: 2026-03-30
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       checks: write
-      contents: write
+      contents: read
 
     steps:
       - name: Checkout
@@ -76,15 +76,6 @@ jobs:
             reports/jest-report.html
           retention-days: 30
 
-      - name: HTML Report auf GitHub Pages deployen
-        if: always() && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch')
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./reports
-          destination_dir: test-reports
-          keep_files: false
-
   html-lint:
     name: HTML Validierung (HTMLHint)
     runs-on: ubuntu-latest
@@ -112,7 +103,11 @@ jobs:
         if: always()
         run: |
           echo '## HTMLHint Validierung' >> $GITHUB_STEP_SUMMARY
-          python3 scripts/htmlhint_summary.py >> $GITHUB_STEP_SUMMARY
+          if [ -f scripts/htmlhint_summary.py ]; then
+            python3 scripts/htmlhint_summary.py >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ scripts/htmlhint_summary.py nicht gefunden." >> $GITHUB_STEP_SUMMARY
+          fi
 
       - name: HTMLHint-Artefakt hochladen
         if: always()
@@ -121,3 +116,17 @@ jobs:
           name: htmlhint-report
           path: reports/htmlhint-report.json
           retention-days: 30
+
+  broken-links:
+    name: Link Check (Lychee)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lychee Broken Link Checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --verbose --no-progress "*.html"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
