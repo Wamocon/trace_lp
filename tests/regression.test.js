@@ -128,7 +128,7 @@ describe('index.html: Interne Anker-Links', () => {
 
 // ── 8. Rechtliche Seiten ───────────────────────────────────────────────────
 describe('Rechtliche Seiten: Grundstruktur', () => {
-  test.each(['agb.html', 'datenschutz.html', 'impressum.html'])(
+  test.each(['agb.html', 'datenschutz.html', 'impressum.html', 'cookies.html'])(
     '%s hat gültige HTML-Struktur und enthält TRACE',
     (page) => {
       const content = read(page);
