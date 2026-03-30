@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datenschutzerklärung | TRACE - Zeit- & Kommunikations-Engine</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" type="text/tailwindcss" href="theme.css">
+  <style type="text/tailwindcss">
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+      font-family: 'Inter', sans-serif;
+    }
+    .legal-card {
+      background: var(--color-surface);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--color-border);
+      border-radius: 24px;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen py-20 px-6">
+  <div class="max-w-3xl mx-auto">
+    <a href="index.html" class="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline mb-12">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Zurück zur Startseite
+    </a>
+
+    <h1 class="text-4xl font-black mb-4 tracking-tight">Datenschutzerklärung</h1>
+    <p class="text-muted mb-12">Stand: März 2026</p>
+
+    <div class="space-y-8">
+      <section class="legal-card">
+        <h2 class="text-xl font-bold mb-4">1. Verantwortlicher</h2>
+        <div class="text-muted leading-relaxed">
+          <p>WAMOCON GmbH</p>
+          <p>Mergenthalerallee 79 – 81</p>
+          <p>65760 Eschborn</p>
+          <p>Telefon: <a href="tel:+4961965838311" class="text-accent hover:underline">+49 6196 5838311</a></p>
+          <p>E-Mail: <a href="mailto:info@wamocon.com" class="text-accent hover:underline">info@wamocon.com</a></p>
+          <p>Projektkontakt TRACE: <a href="mailto:info@trace-app.de" class="text-accent hover:underline">info@trace-app.de</a></p>
+        </div>
+      </section>
+
+      <section class="legal-card">
+        <h2 class="text-xl font-bold mb-4">2. Überblick über die Datenverarbeitung</h2>
+        <div class="text-muted leading-relaxed space-y-4">
+          <p>Diese Datenschutzerklärung gilt für die Website und Webanwendung **TRACE**. TRACE ist eine digitale Plattform für präzise Zeitwirtschaft, Team-Synchronisation, Statusverfolgung und Echtzeit-Reporting.</p>
+          <p>Wir verarbeiten personenbezogene Daten unserer Nutzer grundsätzlich nur, soweit dies zur Bereitstellung einer funktionsfähigen Plattform erforderlich ist. Rechtsgrundlage ist Art. 6 Abs. 1 DSGVO.</p>
+        </div>
+      </section>
+
+      <section class="legal-card">
+        <h2 class="text-xl font-bold mb-4">3. Rechte der Nutzer</h2>
+        <div class="text-muted leading-relaxed">
+          <p>Nutzer haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie das Recht auf Widerspruch gegen die Verarbeitung ihrer personenbezogenen Daten.</p>
+        </div>
+      </section>
+
+      <section class="legal-card">
+        <h2 class="text-xl font-bold mb-4">4. Hosting</h2>
+        <p class="text-muted leading-relaxed">
+          Unsere Plattform wird über Vercel und Supabase gehostet. Dabei werden technisch notwendige Daten (IP-Adresse, Browser-Informationen) verarbeitet, um den Betrieb sicherzustellen.
+        </p>
+      </section>
+    </div>
+
+    <footer class="mt-20 pt-8 border-t border-border text-center text-sm text-muted">
+      <p>&copy; 2026 WAMOCON GmbH. Alle Rechte vorbehalten.</p>
+    </footer>
+  </div>
+</body>
+</html>

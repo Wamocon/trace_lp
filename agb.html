@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AGB | TRACE - Zeit- & Kommunikations-Engine</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" type="text/tailwindcss" href="theme.css">
+  <style type="text/tailwindcss">
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+      font-family: 'Inter', sans-serif;
+    }
+    .legal-card {
+      background: var(--color-surface);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--color-border);
+      border-radius: 24px;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen py-20 px-6">
+  <div class="max-w-3xl mx-auto">
+    <a href="index.html" class="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline mb-12">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Zurück zur Startseite
+    </a>
+
+    <h1 class="text-4xl font-black mb-4 tracking-tight">Allgemeine Geschäftsbedingungen</h1>
+    <p class="text-muted mb-12">Stand: März 2026</p>
+
+    <div class="space-y-8 text-sm sm:text-base">
+      <section class="legal-card">
+        <h2 class="text-xl font-bold mb-4">§ 1 Geltungsbereich</h2>
+        <div class="text-muted space-y-4">
+          <p>(1) Diese AGB der WAMOCON GmbH gelten für alle Verträge über die Nutzung der Plattform **TRACE**, die über trace-app.de bereitgestellt wird.</p>
+          <p>(2) Die Plattform richtet sich an gewerbliche Nutzer (B2B). Verbraucher sind nicht Zielgruppe.</p>
+        </div>
+      </section>
+
+      <section class="legal-card">
+        <h2 class="text-xl font-bold mb-4">§ 2 Leistungsbeschreibung</h2>
+        <div class="text-muted space-y-4">
+          <p>(1) TRACE wird als SaaS-Lösung über das Internet bereitgestellt.</p>
+          <p>(2) Die Plattform umfasst Zeitwirtschaft, Team-Synchronisation, Statusverfolgung und Reporting.</p>
+        </div>
+      </section>
+
+      <section class="legal-card">
+        <h2 class="text-xl font-bold mb-4">§ 3 Nutzungsrechte</h2>
+        <div class="text-muted space-y-4">
+          <p>(1) Der Anbieter räumt ein einfaches Nutzungsrecht für die Dauer des Vertrags ein.</p>
+          <p>(2) Der Quellcode wird nicht überlassen.</p>
+        </div>
+      </section>
+
+      <section class="legal-card">
+        <h2 class="text-xl font-bold mb-4">§ 4 Schlussbestimmungen</h2>
+        <div class="text-muted space-y-4">
+          <p>(1) Es gilt das Recht der Bundesrepublik Deutschland.</p>
+          <p>(2) Gerichtsstand ist Frankfurt am Main.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer class="mt-20 pt-8 border-t border-border text-center text-sm text-muted">
+      <p>&copy; 2026 WAMOCON GmbH. Alle Rechte vorbehalten.</p>
+    </footer>
+  </div>
+</body>
+</html>
