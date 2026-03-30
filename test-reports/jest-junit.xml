@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="42" failures="0" errors="0" time="0.557">
+  <testsuite name="Pflichtdateien" errors="0" failures="0" skipped="0" timestamp="2026-03-30T07:10:07" time="0.532" tests="42">
+    <testcase classname="Pflichtdateien" name="index.html ist vorhanden" time="0.002">
+    </testcase>
+    <testcase classname="Pflichtdateien" name="style.css ist vorhanden" time="0.007">
+    </testcase>
+    <testcase classname="Pflichtdateien" name="script.js ist vorhanden" time="0.001">
+    </testcase>
+    <testcase classname="Pflichtdateien" name="favicon.png ist vorhanden" time="0">
+    </testcase>
+    <testcase classname="Pflichtdateien" name="agb.html ist vorhanden" time="0">
+    </testcase>
+    <testcase classname="Pflichtdateien" name="datenschutz.html ist vorhanden" time="0">
+    </testcase>
+    <testcase classname="Pflichtdateien" name="impressum.html ist vorhanden" time="0">
+    </testcase>
+    <testcase classname="Pflichtdateien" name=".gitignore ist vorhanden" time="0">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="index.html: enthält kein &quot;LFA&quot;" time="0.001">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="index.html: enthält kein &quot;IHK&quot;" time="0.001">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="index.html: enthält kein &quot;FIAE&quot;" time="0.001">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="index.html: enthält kein &quot;legacy branding&quot;" time="0.001">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="style.css: enthält kein &quot;LFA&quot;" time="0">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="style.css: enthält kein &quot;IHK&quot;" time="0">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="style.css: enthält kein &quot;FIAE&quot;" time="0.001">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="style.css: enthält kein &quot;legacy branding&quot;" time="0">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="script.js: enthält kein &quot;LFA&quot;" time="0">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="script.js: enthält kein &quot;IHK&quot;" time="0.001">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="script.js: enthält kein &quot;FIAE&quot;" time="0">
+    </testcase>
+    <testcase classname="Keine Legacy-Inhalte (LFA / IHK / legacy)" name="script.js: enthält kein &quot;legacy branding&quot;" time="0">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;hero&quot; vorhanden" time="0">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;problem&quot; vorhanden" time="0">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;roadmap&quot; vorhanden" time="0">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;rollen&quot; vorhanden" time="0">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;funktionen&quot; vorhanden" time="0">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;wizard&quot; vorhanden" time="0.001">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;demo&quot; vorhanden" time="0">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;architektur&quot; vorhanden" time="0.001">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;team&quot; vorhanden" time="0">
+    </testcase>
+    <testcase classname="index.html: Pflicht-Sektionen vorhanden" name="id=&quot;footer&quot; vorhanden" time="0.001">
+    </testcase>
+    <testcase classname="index.html: Navigation &amp; Branding" name="favicon.png im &lt;head&gt; verlinkt" time="0">
+    </testcase>
+    <testcase classname="index.html: Navigation &amp; Branding" name="Markenname &quot;TRACE&quot; vorhanden" time="0.001">
+    </testcase>
+    <testcase classname="index.html: Navigation &amp; Branding" name="Entwickelt in Deutschland Badge vorhanden" time="0">
+    </testcase>
+    <testcase classname="index.html: Meta-Tags" name="charset deklariert" time="0.001">
+    </testcase>
+    <testcase classname="index.html: Meta-Tags" name="viewport Meta-Tag vorhanden" time="0">
+    </testcase>
+    <testcase classname="index.html: Meta-Tags" name="description Meta-Tag vorhanden" time="0.001">
+    </testcase>
+    <testcase classname="index.html: SVG-Sprite Symbole" name="alle verwendeten &lt;use href=&quot;#i-...&quot;&gt; Symbole sind definiert" time="0.001">
+    </testcase>
+    <testcase classname="index.html: Interne Anker-Links" name="alle href=&quot;#...&quot; Links verweisen auf existierende IDs" time="0.001">
+    </testcase>
+    <testcase classname="Rechtliche Seiten: Grundstruktur" name="agb.html hat gültige HTML-Struktur und enthält TRACE" time="0.001">
+    </testcase>
+    <testcase classname="Rechtliche Seiten: Grundstruktur" name="datenschutz.html hat gültige HTML-Struktur und enthält TRACE" time="0.001">
+    </testcase>
+    <testcase classname="Rechtliche Seiten: Grundstruktur" name="impressum.html hat gültige HTML-Struktur und enthält TRACE" time="0">
+    </testcase>
+    <testcase classname="Rechtliche Seiten: Grundstruktur" name="cookies.html hat gültige HTML-Struktur und enthält TRACE" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>
