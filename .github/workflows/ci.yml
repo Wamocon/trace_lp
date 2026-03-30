@@ -96,8 +96,8 @@ jobs:
 
       - name: HTMLHint ausführen (mit Report)
         run: |
-          npx htmlhint "*.html" --format=json 2>/dev/null > reports/htmlhint-report.json || echo "[]" > reports/htmlhint-report.json
-          npx htmlhint "*.html"
+          npx htmlhint "docs/*.html" --format=json 2>/dev/null > reports/htmlhint-report.json || echo "[]" > reports/htmlhint-report.json
+          npx htmlhint "docs/*.html"
 
       - name: HTMLHint Summary in GitHub Actions schreiben
         if: always()
@@ -127,6 +127,6 @@ jobs:
       - name: Lychee Broken Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --no-progress "*.html"
+          args: --verbose --no-progress "docs/*.html"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
