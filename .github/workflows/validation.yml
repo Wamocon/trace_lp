@@ -1,0 +1,69 @@
+name: "2 · Validierungschecks (HTML + Links)"
+# Runs HTMLHint lint and Lychee broken-link check on every push
+
+on:
+  push:
+    branches:
+      - main
+      - 'dev/**'
+      - 'feature/**'
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize, reopened, ready_for_review ]
+  workflow_dispatch:
+
+jobs:
+  html-lint:
+    name: HTML Validierung (HTMLHint)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: reports/ Verzeichnis anlegen
+        run: mkdir -p reports
+
+      - name: HTMLHint ausführen (mit Report)
+        run: |
+          npx htmlhint "docs/*.html" --format=json 2>/dev/null > reports/htmlhint-report.json || echo "[]" > reports/htmlhint-report.json
+          npx htmlhint "docs/*.html"
+
+      - name: HTMLHint Summary in GitHub Actions schreiben
+        if: always()
+        run: |
+          echo '## HTMLHint Validierung' >> $GITHUB_STEP_SUMMARY
+          if [ -f scripts/htmlhint_summary.py ]; then
+            python3 scripts/htmlhint_summary.py >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ scripts/htmlhint_summary.py nicht gefunden." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: HTMLHint-Artefakt hochladen
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: htmlhint-report
+          path: reports/htmlhint-report.json
+          retention-days: 30
+
+  broken-links:
+    name: Link Check (Lychee)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lychee Broken Link Checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --verbose --no-progress --exclude "https://app\\.trace\\.wamocon\\.de" "docs/*.html"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

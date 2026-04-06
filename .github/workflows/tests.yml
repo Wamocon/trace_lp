@@ -1,5 +1,5 @@
-name: CI – Regression & Checks
-# last updated: 2026-03-30
+name: "1 · Unit Tests (Jest)"
+# Runs Jest regression tests on every push
 
 on:
   push:
@@ -43,7 +43,7 @@ jobs:
         run: npm run test:ci
         env:
           JEST_HTML_REPORTER_OUTPUT_PATH: reports/jest-report.html
-          JEST_HTML_REPORTER_PAGE_TITLE: TRACE Regression Tests
+          JEST_HTML_REPORTER_PAGE_TITLE: TRACE Regression Tests v2
           JEST_HTML_REPORTER_INCLUDE_FAILURE_MSG: true
 
       - name: Test-Report in GitHub Actions Summary schreiben
@@ -58,11 +58,11 @@ jobs:
             process.exit(0);
           }
           const xml = fs.readFileSync(xmlPath, 'utf8');
-          const tests = (xml.match(/tests=\"(\d+)\"/)?.[1]) || '?';
+          const tests    = (xml.match(/tests=\"(\d+)\"/)?.[1])    || '?';
           const failures = (xml.match(/failures=\"(\d+)\"/)?.[1]) || '0';
-          const errors = (xml.match(/errors=\"(\d+)\"/)?.[1]) || '0';
-          const failed = parseInt(failures) + parseInt(errors);
-          const icon = failed === 0 ? '✅' : '❌';
+          const errors   = (xml.match(/errors=\"(\d+)\"/)?.[1])   || '0';
+          const failed   = parseInt(failures) + parseInt(errors);
+          const icon     = failed === 0 ? '✅' : '❌';
           console.log(icon + ' ' + tests + ' Tests, ' + failed + ' fehlgeschlagen');
           " >> $GITHUB_STEP_SUMMARY
 
@@ -75,58 +75,3 @@ jobs:
             reports/jest-junit.xml
             reports/jest-report.html
           retention-days: 30
-
-  html-lint:
-    name: HTML Validierung (HTMLHint)
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Node.js einrichten
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: reports/ Verzeichnis anlegen
-        run: mkdir -p reports
-
-      - name: HTMLHint ausführen (mit Report)
-        run: |
-          npx htmlhint "docs/*.html" --format=json 2>/dev/null > reports/htmlhint-report.json || echo "[]" > reports/htmlhint-report.json
-          npx htmlhint "docs/*.html"
-
-      - name: HTMLHint Summary in GitHub Actions schreiben
-        if: always()
-        run: |
-          echo '## HTMLHint Validierung' >> $GITHUB_STEP_SUMMARY
-          if [ -f scripts/htmlhint_summary.py ]; then
-            python3 scripts/htmlhint_summary.py >> $GITHUB_STEP_SUMMARY
-          else
-            echo "⚠️ scripts/htmlhint_summary.py nicht gefunden." >> $GITHUB_STEP_SUMMARY
-          fi
-
-      - name: HTMLHint-Artefakt hochladen
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: htmlhint-report
-          path: reports/htmlhint-report.json
-          retention-days: 30
-
-  broken-links:
-    name: Link Check (Lychee)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Lychee Broken Link Checker
-        uses: lycheeverse/lychee-action@v2
-        with:
-          args: --verbose --no-progress "docs/*.html"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
