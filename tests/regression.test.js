@@ -1,8 +1,10 @@
 /**
- * TRACE - Zeit- & Kommunikations-Engine (WAMOCON) — Regression Tests
+ * TRACE Landing Page v2 (WAMOCON) — Regression Tests
  *
  * Zweck: Sicherstellen, dass kritische Inhalte, Strukturen und Links
  * nach jeder Änderung korrekt erhalten bleiben.
+ *
+ * v2 Sektionen: hero, funktionen, workflow, rollen, mehr, preise, faq, team, footer
  */
 
 'use strict';
@@ -55,15 +57,15 @@ describe('Keine Legacy-Inhalte (LFA / IHK / legacy)', () => {
   });
 });
 
-// ── 3. index.html: Pflicht-Sektionen vorhanden ──────────────────────────────
+// ── 3. index.html: Pflicht-Sektionen vorhanden (v2) ─────────────────────────
 describe('index.html: Pflicht-Sektionen vorhanden', () => {
   let html;
   beforeAll(() => { html = read('index.html'); });
 
   test.each([
-    'hero', 'problem', 'roadmap',
-    'rollen', 'funktionen', 'wizard',
-    'demo', 'architektur', 'team', 'footer',
+    'hero', 'funktionen', 'workflow',
+    'rollen', 'mehr', 'preise',
+    'faq', 'team', 'footer',
   ])('id="%s" vorhanden', (id) => {
     expect(html).toContain(`id="${id}"`);
   });
@@ -146,4 +148,143 @@ describe('Rechtliche Seiten: Grundstruktur', () => {
       expect(content).not.toMatch(/plan-IT/i);
     }
   );
+});
+
+// ── 9. index.html: v2 UI-Elemente ──────────────────────────────────────────
+describe('index.html: v2 UI-Elemente', () => {
+  let html;
+  beforeAll(() => { html = read('index.html'); });
+
+  test('iPhone-Mockup (iphone-frame) vorhanden', () => {
+    expect(html).toContain('iphone-frame');
+  });
+
+  test('Preiskarten vorhanden (price-lite, price-pro)', () => {
+    expect(html).toContain('price-lite');
+    expect(html).toContain('price-pro');
+  });
+
+  test('Billing-Toggle (billToggle) vorhanden', () => {
+    expect(html).toContain('id="billToggle"');
+  });
+
+  test('Lite-Preis (litePrice) vorhanden', () => {
+    expect(html).toContain('id="litePrice"');
+  });
+
+  test('Pro-Preis (proPrice) vorhanden', () => {
+    expect(html).toContain('id="proPrice"');
+  });
+
+  test('FAQ-Liste (faqList) vorhanden', () => {
+    expect(html).toContain('id="faqList"');
+  });
+
+  test('Cookie-Banner vorhanden', () => {
+    expect(html).toContain('id="cookieBanner"');
+  });
+
+  test('Back-to-Top-Button vorhanden', () => {
+    expect(html).toContain('id="btt"');
+  });
+
+  test('Mobile-Menu vorhanden', () => {
+    expect(html).toContain('id="mobileMenu"');
+  });
+});
+
+// ── 10. index.html: Preismodell-Inhalte ──────────────────────────────────
+describe('index.html: Preismodell', () => {
+  let html;
+  beforeAll(() => { html = read('index.html'); });
+
+  test('Lite-Plan erwähnt', () => {
+    expect(html).toMatch(/Lite/);
+  });
+
+  test('Pro-Plan erwähnt', () => {
+    expect(html).toMatch(/Pro/);
+  });
+
+  test('30 Tage Trial erwähnt', () => {
+    expect(html).toMatch(/30.*[Tt]age/);
+  });
+
+  test('Preisangabe vorhanden (€)', () => {
+    expect(html).toContain('€');
+  });
+
+  test('Quellenangabe Preise vorhanden (toggl|clockify)', () => {
+    expect(html.toLowerCase()).toMatch(/toggl|clockify|timeneye/);
+  });
+});
+
+// ── 11. index.html: Hauptfunktionen ──────────────────────────────────────
+describe('index.html: Hauptfunktionen (v2)', () => {
+  let html;
+  beforeAll(() => { html = read('index.html'); });
+
+  test('Einreichung als Feature vorhanden', () => {
+    expect(html).toMatch(/Einreich/);
+  });
+
+  test('E-Mail-Versand als Feature vorhanden', () => {
+    expect(html).toMatch(/E-Mail/i);
+  });
+
+  test('Export-Vorlagen als Feature vorhanden', () => {
+    expect(html).toMatch(/Vorlag/);
+  });
+
+  test('Kalenderintegration als Feature vorhanden', () => {
+    expect(html).toMatch(/Kalend/);
+  });
+
+  test('Outlook-Anbindung genannt', () => {
+    expect(html).toMatch(/Outlook/);
+  });
+
+  test('Google-Kalender-Anbindung genannt', () => {
+    expect(html).toMatch(/Google/);
+  });
+});
+
+// ── 12. index.html: Keine veralteten Sektionen ───────────────────────────
+describe('index.html: Keine v1-Sektionen', () => {
+  let html;
+  beforeAll(() => { html = read('index.html'); });
+
+  test.each(['problem', 'roadmap', 'wizard', 'architektur', 'demo'])(
+    'id="%s" nicht vorhanden (v1 entfernt)',
+    (id) => {
+      expect(html).not.toContain(`id="${id}"`);
+    }
+  );
+});
+
+// ── 13. script.js: v2-Funktionen vorhanden ───────────────────────────────
+describe('script.js: v2-Funktionen vorhanden', () => {
+  let js;
+  beforeAll(() => { js = read('script.js'); });
+
+  test.each([
+    'initReveal',
+    'initNavbar',
+    'initSmoothScroll',
+    'initFAQ',
+    'initPriceToggle',
+    'initBackToTop',
+    'initCookieBanner',
+    'initMobileMenu',
+  ])('Funktion %s() vorhanden', (fn) => {
+    expect(js).toContain(`function ${fn}`);
+  });
+
+  test('v1 initRoadmap nicht vorhanden', () => {
+    expect(js).not.toContain('function initRoadmap() {');
+  });
+
+  test('v1 initParticles nicht vorhanden', () => {
+    expect(js).not.toContain('function initParticles');
+  });
 });
