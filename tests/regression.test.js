@@ -223,12 +223,12 @@ describe('index.html: Preismodell', () => {
     expect(html).toContain('€');
   });
 
-  test('Lite-Preis 5,90 vorhanden', () => {
-    expect(html).toContain('5,90');
+  test('Lite-Preis 2 € vorhanden', () => {
+    expect(html).toContain('2 €');
   });
 
-  test('Pro-Preis 11,90 vorhanden', () => {
-    expect(html).toContain('11,90');
+  test('Pro-Preis 6 € vorhanden', () => {
+    expect(html).toContain('6 €');
   });
 });
 
