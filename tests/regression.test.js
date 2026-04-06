@@ -1,10 +1,10 @@
 /**
- * TRACE Landing Page v2 (WAMOCON) — Regression Tests
+ * TRACE Landing Page (WAMOCON) — Regression Tests
  *
  * Zweck: Sicherstellen, dass kritische Inhalte, Strukturen und Links
  * nach jeder Änderung korrekt erhalten bleiben.
  *
- * v2 Sektionen: hero, funktionen, workflow, rollen, mehr, preise, faq, team, footer
+ * Sektionen (AWAY-Struktur): hero, features, how, showcase, roi, pricing, faq
  */
 
 'use strict';
@@ -57,15 +57,13 @@ describe('Keine Legacy-Inhalte (LFA / IHK / legacy)', () => {
   });
 });
 
-// ── 3. index.html: Pflicht-Sektionen vorhanden (v2) ─────────────────────────
+// ── 3. index.html: Pflicht-Sektionen vorhanden ─────────────────────────────────────────────
 describe('index.html: Pflicht-Sektionen vorhanden', () => {
   let html;
   beforeAll(() => { html = read('index.html'); });
 
   test.each([
-    'hero', 'funktionen', 'workflow',
-    'rollen', 'mehr', 'preise',
-    'faq', 'team', 'footer',
+    'hero', 'features', 'how', 'showcase', 'roi', 'pricing', 'faq',
   ])('id="%s" vorhanden', (id) => {
     expect(html).toContain(`id="${id}"`);
   });
@@ -151,7 +149,7 @@ describe('Rechtliche Seiten: Grundstruktur', () => {
 });
 
 // ── 9. index.html: v2 UI-Elemente ──────────────────────────────────────────
-describe('index.html: v2 UI-Elemente', () => {
+describe('index.html: UI-Elemente', () => {
   let html;
   beforeAll(() => { html = read('index.html'); });
 
@@ -159,37 +157,48 @@ describe('index.html: v2 UI-Elemente', () => {
     expect(html).toContain('iphone-frame');
   });
 
-  test('Preiskarten vorhanden (price-lite, price-pro)', () => {
-    expect(html).toContain('price-lite');
-    expect(html).toContain('price-pro');
+  test('Tab-Buttons (tab-btn) vorhanden', () => {
+    expect(html).toContain('class="tab-btn');
   });
 
-  test('Billing-Toggle (billToggle) vorhanden', () => {
-    expect(html).toContain('id="billToggle"');
+  test('ROI-Slider (employee-slider) vorhanden', () => {
+    expect(html).toContain('id="employee-slider"');
   });
 
-  test('Lite-Preis (litePrice) vorhanden', () => {
-    expect(html).toContain('id="litePrice"');
+  test('ROI-Slider (request-slider) vorhanden', () => {
+    expect(html).toContain('id="request-slider"');
   });
 
-  test('Pro-Preis (proPrice) vorhanden', () => {
-    expect(html).toContain('id="proPrice"');
+  test('ROI Ersparnis-Anzeige (savings-value) vorhanden', () => {
+    expect(html).toContain('id="savings-value"');
   });
 
-  test('FAQ-Liste (faqList) vorhanden', () => {
-    expect(html).toContain('id="faqList"');
+  test('Kontaktmodal (contact-modal) vorhanden', () => {
+    expect(html).toContain('id="contact-modal"');
   });
 
-  test('Cookie-Banner vorhanden', () => {
-    expect(html).toContain('id="cookieBanner"');
+  test('Sprachumschalter DE (lang-de) vorhanden', () => {
+    expect(html).toContain('id="lang-de"');
   });
 
-  test('Back-to-Top-Button vorhanden', () => {
-    expect(html).toContain('id="btt"');
+  test('Sprachumschalter EN (lang-en) vorhanden', () => {
+    expect(html).toContain('id="lang-en"');
   });
 
-  test('Mobile-Menu vorhanden', () => {
-    expect(html).toContain('id="mobileMenu"');
+  test('Mobile-Menu-Button vorhanden', () => {
+    expect(html).toContain('id="mobile-menu-btn"');
+  });
+
+  test('Mobile-Nav-Dropdown vorhanden', () => {
+    expect(html).toContain('id="mobile-nav"');
+  });
+
+  test('Pricing-Cards vorhanden', () => {
+    expect(html).toContain('pricing-card');
+  });
+
+  test('FAQ-Items vorhanden', () => {
+    expect(html).toContain('faq-item');
   });
 });
 
@@ -206,16 +215,20 @@ describe('index.html: Preismodell', () => {
     expect(html).toMatch(/Pro/);
   });
 
-  test('30 Tage Trial erwähnt', () => {
-    expect(html).toMatch(/30.*[Tt]age/);
+  test('Innovation Package erwähnt', () => {
+    expect(html).toMatch(/Innovation Package/);
   });
 
   test('Preisangabe vorhanden (€)', () => {
     expect(html).toContain('€');
   });
 
-  test('Quellenangabe Preise vorhanden (toggl|clockify)', () => {
-    expect(html.toLowerCase()).toMatch(/toggl|clockify|timeneye/);
+  test('Lite-Preis 5,90 vorhanden', () => {
+    expect(html).toContain('5,90');
+  });
+
+  test('Pro-Preis 11,90 vorhanden', () => {
+    expect(html).toContain('11,90');
   });
 });
 
@@ -250,12 +263,13 @@ describe('index.html: Hauptfunktionen (v2)', () => {
 });
 
 // ── 12. index.html: Keine veralteten Sektionen ───────────────────────────
-describe('index.html: Keine v1-Sektionen', () => {
+describe('index.html: Keine alten Sektions-IDs', () => {
   let html;
   beforeAll(() => { html = read('index.html'); });
 
-  test.each(['problem', 'roadmap', 'wizard', 'architektur', 'demo'])(
-    'id="%s" nicht vorhanden (v1 entfernt)',
+  test.each(['problem', 'roadmap', 'wizard', 'architektur', 'demo',
+             'funktionen', 'workflow', 'rollen', 'mehr', 'preise', 'team'])(
+    'id="%s" nicht vorhanden (veraltet)',
     (id) => {
       expect(html).not.toContain(`id="${id}"`);
     }
@@ -263,21 +277,30 @@ describe('index.html: Keine v1-Sektionen', () => {
 });
 
 // ── 13. script.js: v2-Funktionen vorhanden ───────────────────────────────
-describe('script.js: v2-Funktionen vorhanden', () => {
+describe('script.js: Funktionen vorhanden', () => {
   let js;
   beforeAll(() => { js = read('script.js'); });
 
   test.each([
+    'initLangToggle',
+    'initIphoneScreenCycle',
+    'initShowcaseTabs',
+    'initROICalculator',
+    'initNav',
     'initReveal',
-    'initNavbar',
     'initSmoothScroll',
     'initFAQ',
-    'initPriceToggle',
-    'initBackToTop',
-    'initCookieBanner',
     'initMobileMenu',
   ])('Funktion %s() vorhanden', (fn) => {
     expect(js).toContain(`function ${fn}`);
+  });
+
+  test('ROI-Berechnung mit 22 Min. (TRACE-Kalibrierung)', () => {
+    expect(js).toContain('* 22');
+  });
+
+  test('openContactModal exportiert', () => {
+    expect(js).toContain('window.openContactModal');
   });
 
   test('v1 initRoadmap nicht vorhanden', () => {

@@ -1,1031 +1,1219 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TRACE – Zeiterfassung & Genehmigungsmanagement | WAMOCON</title>
-  <meta name="description" content="TRACE – Die cloudbasierte Zeiterfassung für moderne Teams. Einreichung, Genehmigung, E-Mail-Versand, eigene Export-Vorlagen und Kalender-Integration in einer DSGVO-konformen App. Von WAMOCON.">
-  <meta name="theme-color" content="#040810">
-  <meta property="og:title" content="TRACE – Zeiterfassung &amp; Genehmigungsmanagement">
-  <meta property="og:description" content="Zeiterfassung. Einreichung. Genehmigung. Export. Alles in einer App – DSGVO-konform, Made in Germany.">
+  <title>TRACE – Zeiterfassung &amp; Genehmigung | WAMOCON</title>
+  <meta name="description" content="TRACE digitalisiert die Zeiterfassung: Monatserfassung mit Einreichung, automatischer E-Mail-Versand, eigene Export-Vorlagen und Kalender-Sync. DSGVO-konform, entwickelt in Deutschland.">
+  <meta name="theme-color" content="#0b1220">
+  <meta property="og:title" content="TRACE – Zeiterfassung &amp; Genehmigung | WAMOCON">
+  <meta property="og:description" content="Zeiterfassung, Einreichung, E-Mail-Versand, Vorlagen und Kalender-Sync – alles in einer App.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="de_DE">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="TRACE – Zeiterfassung neu gedacht">
-  <meta name="twitter:description" content="Präzise Zeiterfassung, automatischer E-Mail-Versand, eigene Export-Vorlagen &amp; Kalenderanbindung für dein Team.">
-  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="favicon.png">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" type="text/tailwindcss" href="theme.css">
-
   <style type="text/tailwindcss">
-    :root {
-      --acc: #ff1a1a;
-      --acc-dim: #e01515;
-      --acc-soft: rgba(255,26,26,.08);
+    @theme {
+      --color-bg:          #f8fafc;
+      --color-bg-alt:      #f1f5f9;
+      --color-surface:     #ffffff;
+      --color-accent:      #3b82f6;
+      --color-accent-dim:  #2563eb;
+      --color-text-main:   #0f172a;
+      --color-muted:       #475569;
+      --color-faint:       #94a3b8;
+      --color-dark-bg:     #0b1220;
+      --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Outfit', sans-serif;
     }
-    html { scrollbar-gutter: auto; }
-    body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text-main); position:relative; }
-
-    /* Orbs */
-    .orb-wrap { position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden; }
-    .orb { position:absolute;border-radius:50%;filter:blur(120px);will-change:transform; }
-    .orb-1 { width:700px;height:700px;background:#ff1a1a;opacity:.04;top:-10%;left:-5%;animation:od1 28s ease-in-out infinite; }
-    .orb-2 { width:500px;height:500px;background:#38bdf8;opacity:.03;top:50%;right:-5%;animation:od2 32s ease-in-out infinite; }
-    .orb-3 { width:400px;height:400px;background:#6366f1;opacity:.03;bottom:-10%;left:40%;animation:od3 24s ease-in-out infinite; }
-    @keyframes od1{0%,100%{transform:translate(0,0)}50%{transform:translate(80px,60px)}}
-    @keyframes od2{0%,100%{transform:translate(0,0)}50%{transform:translate(-60px,-40px)}}
-    @keyframes od3{0%,100%{transform:translate(0,0)}50%{transform:translate(-80px,50px)}}
-
-    /* Ticker */
-    .ticker-rail { overflow:hidden;height:100%; }
-    .ticker-track { display:flex;align-items:center;width:max-content;white-space:nowrap;animation:ticker 30s linear infinite; }
-    .ticker-item { padding:0 3rem;font-size:.85rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.85); }
-    .ticker-item::before { content:'◆';margin-right:1.5rem;color:#ff1a1a;font-size:.6rem;vertical-align:middle; }
-    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-    /* Nav */
-    .nav-scrolled { background:rgba(4,8,16,.92)!important;backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,26,26,.08); }
-    .nav-pill { display:flex;align-items:center;gap:1px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:100px;padding:3px 5px; }
-    .nav-l { padding:5px 12px;border-radius:100px;font-size:.72rem;font-weight:500;color:var(--color-muted);transition:all .2s;white-space:nowrap; }
-    .nav-l:hover { color:var(--color-text-main);background:rgba(255,255,255,.06); }
-    .nav-l--active { color:#ff1a1a!important;background:rgba(255,26,26,.1)!important;font-weight:600; }
-
-    /* Hamburger */
-    .nav-hbg { display:none;flex-direction:column;justify-content:center;gap:5px;cursor:pointer;padding:8px;border:none;background:transparent; }
-    @media(max-width:767px){.nav-hbg{display:flex;}}
-    .nav-hbg span { display:block;width:22px;height:2px;background:var(--color-text-main);border-radius:2px;transition:all .35s cubic-bezier(.16,1,.3,1); }
-    .nav-hbg.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-    .nav-hbg.open span:nth-child(2){opacity:0;}
-    .nav-hbg.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-    #mobileMenu { display:flex;flex-direction:column;align-items:center;justify-content:center;position:fixed;inset:0;z-index:50;background:rgba(4,8,16,.97);backdrop-filter:blur(24px);visibility:hidden;opacity:0;pointer-events:none;transition:opacity .28s,visibility .28s; }
-    #mobileMenu.open { visibility:visible;opacity:1;pointer-events:auto; }
-    .mm-close { position:absolute;top:18px;right:18px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer; }
-    .mm-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px;width:calc(100% - 48px);max-width:340px; }
-    .mm-link { font-size:.95rem;font-weight:600;color:rgba(255,255,255,.75);padding:14px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;text-align:center;transition:all .2s;text-decoration:none; }
-    .mm-link:hover { color:#fff;background:rgba(255,26,26,.14);border-color:rgba(255,26,26,.3); }
-    .mm-link--full { grid-column:span 2; }
-
-    /* Reveal */
-    .reveal { opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1); }
-    .reveal--vis { opacity:1;transform:none; }
-
-    /* Buttons */
-    .btn-primary { display:inline-flex;align-items:center;gap:8px;background:#ff1a1a;color:#fff;padding:13px 28px;border-radius:12px;font-weight:700;font-size:.9rem;transition:all .25s;border:none;cursor:pointer;text-decoration:none; }
-    .btn-primary:hover { background:#e01515;transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,26,26,.4); }
-    .btn-ghost { display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);color:var(--color-text-main);padding:13px 28px;border-radius:12px;font-weight:600;font-size:.9rem;transition:all .25s;border:1px solid rgba(255,255,255,.1);cursor:pointer;text-decoration:none; }
-    .btn-ghost:hover { background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2); }
-
-    /* Gradient texts */
-    .grad-red { background:linear-gradient(135deg,#ff1a1a,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
-
-    /* iPhone frame */
-    .iphone-wrap { position:relative;display:flex;justify-content:center;align-items:flex-start; }
-    .iphone-frame {
-      position:relative;width:280px;
-      background:linear-gradient(145deg,#1a1a1e,#0d0d10);
-      border-radius:50px;padding:14px;
-      box-shadow:0 0 0 1px rgba(255,255,255,.12),0 0 0 2px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.06),0 40px 120px rgba(0,0,0,.7),0 0 80px rgba(255,26,26,.08);
-    }
-    .iphone-frame::before {
-      content:'';position:absolute;left:-3px;top:120px;width:3px;height:36px;
-      background:rgba(255,255,255,.1);border-radius:2px 0 0 2px;
-      box-shadow:0 48px 0 rgba(255,255,255,.1),0 96px 0 rgba(255,255,255,.1);
-    }
-    .iphone-frame::after {
-      content:'';position:absolute;right:-3px;top:160px;width:3px;height:64px;
-      background:rgba(255,255,255,.1);border-radius:0 2px 2px 0;
-    }
-    .iphone-screen {
-      position:relative;width:100%;background:#040810;border-radius:38px;overflow:hidden;
-      min-height:552px;
-    }
-    .dyn-island { position:absolute;top:10px;left:50%;transform:translateX(-50%);width:90px;height:28px;background:#000;border-radius:20px;z-index:10; }
-    .trace-topbar { display:flex;align-items:center;justify-content:space-between;padding:8px 14px 6px;border-bottom:1px solid rgba(255,255,255,.06);position:absolute;top:42px;left:0;right:0;z-index:5; }
-    .trace-topbar-title { font-size:.7rem;font-weight:700;color:#f0f0f2; }
-    .tc-icon { width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,.08);display:inline-flex;align-items:center;justify-content:center; }
-    .trace-grid { display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px 8px;position:absolute;top:112px;left:0;right:0; }
-    .trace-card { border-radius:12px;padding:10px 8px; }
-    .tc-green { background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2); }
-    .tc-red   { background:rgba(255,26,26,.05);border:1px solid rgba(255,26,26,.15); }
-    .tc-muted { background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07); }
-    .tc-amber { background:rgba(234,179,8,.05);border:1px solid rgba(234,179,8,.15); }
-    .tc-month { font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:4px; }
-    .tc-hours { font-size:1.05rem;font-weight:800;color:#f0f0f2;letter-spacing:-.02em; }
-    .tc-hours sub { font-size:.65rem;font-weight:500;color:rgba(255,255,255,.35); }
-    .tc-badge { display:inline-flex;align-items:center;font-size:.5rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 5px;border-radius:5px;margin-top:4px; }
-    .badge-ok   { background:rgba(52,211,153,.15);color:rgba(52,211,153,.9); }
-    .badge-rej  { background:rgba(255,26,26,.15);color:rgba(255,100,100,.9); }
-    .badge-pend { background:rgba(234,179,8,.15);color:rgba(234,179,8,.9); }
-    .badge-drft { background:rgba(255,255,255,.08);color:rgba(255,255,255,.4); }
-    .trace-navbar {
-      position:absolute;bottom:0;left:0;right:0;
-      display:flex;justify-content:space-around;align-items:center;
-      padding:6px 4px 12px;background:rgba(10,18,36,.95);
-      border-top:1px solid rgba(255,255,255,.06);backdrop-filter:blur(12px);
-    }
-    .tnav-item { display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 8px;border-radius:8px; }
-    .tnav-item--active { background:rgba(255,26,26,.1); }
-    .tnav-lbl { font-size:.42rem;font-weight:600;color:rgba(255,255,255,.35); }
-    .tnav-item--active .tnav-lbl { color:#ff6b6b; }
-
-    /* Browser mockup */
-    .browser-wrap { border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 60px rgba(0,0,0,.3); }
-    .browser-bar { display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.06); }
-    .bdots span { width:9px;height:9px;border-radius:50%;display:inline-block; }
-    .bd1{background:#ff5f57;} .bd2{background:#febc2e;} .bd3{background:#28c840;}
-    .burl { flex:1;background:rgba(255,255,255,.04);border-radius:5px;padding:3px 10px;font-size:.65rem;color:rgba(255,255,255,.3);font-family:monospace; }
-
-    /* Feature cards */
-    .feat-card { border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:28px;background:rgba(255,255,255,.02);transition:all .5s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden; }
-    .feat-card::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,26,26,.3),transparent);opacity:0;transition:opacity .4s; }
-    .feat-card:hover { transform:translateY(-4px);border-color:rgba(255,26,26,.2);box-shadow:0 20px 60px rgba(0,0,0,.2); }
-    .feat-card:hover::before { opacity:1; }
-    .feat-icon { width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px; }
-
-    /* Role cards */
-    .role-card { border:1px solid rgba(255,255,255,.07);border-radius:20px;overflow:hidden;transition:all .5s cubic-bezier(.16,1,.3,1); }
-    .role-card:hover { transform:translateY(-3px);box-shadow:0 20px 50px rgba(0,0,0,.2); }
-    .role-tag { display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px; }
-
-    /* Pricing */
-    .price-card { border-radius:24px;padding:36px 32px;position:relative;overflow:hidden;display:flex;flex-direction:column; }
-    .price-lite { background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08); }
-    .price-pro  { background:linear-gradient(145deg,rgba(255,26,26,.1),rgba(255,26,26,.04));border:1px solid rgba(255,26,26,.3);box-shadow:0 0 60px rgba(255,26,26,.08); }
-    .price-pro::before { content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,26,26,.5),transparent); }
-    .price-badge { position:absolute;top:20px;right:20px;background:#ff1a1a;color:#fff;font-size:.65rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:8px; }
-    .price-amount { font-size:2.75rem;font-weight:900;letter-spacing:-.04em;line-height:1; }
-    .check-list { list-style:none;padding:0;margin:0; }
-    .check-list li { display:flex;align-items:flex-start;gap:10px;padding:7px 0;font-size:.875rem;color:var(--color-muted);border-bottom:1px solid rgba(255,255,255,.04); }
-    .check-list li:last-child { border-bottom:none; }
-    .ck { flex-shrink:0;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;margin-top:1px; }
-    .ck-ok { background:rgba(52,211,153,.15);color:#34d399; }
-    .ck-no { background:rgba(255,255,255,.06);color:rgba(255,255,255,.2); }
-
-    /* FAQ */
-    .faq-item { border-bottom:1px solid rgba(255,255,255,.06);transition:background .25s; }
-    .faq-item:first-child { border-top:1px solid rgba(255,255,255,.06); }
-    .faq-item--open { background:rgba(255,26,26,.02);border-color:rgba(255,26,26,.1)!important; }
-    .faq-q { width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;background:none;border:none;text-align:left;color:var(--color-text-main); }
-    .faq-icon { width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,.12);flex-shrink:0;position:relative; }
-    .faq-icon::before,.faq-icon::after { content:'';position:absolute;background:rgba(255,255,255,.5);border-radius:1px; }
-    .faq-icon::before { width:10px;height:1.5px;top:50%;left:50%;transform:translate(-50%,-50%); }
-    .faq-icon::after  { width:1.5px;height:10px;top:50%;left:50%;transform:translate(-50%,-50%); }
-    .faq-item--open .faq-icon::after { opacity:0; }
-    .faq-a { max-height:0;overflow:hidden;transition:max-height .3s cubic-bezier(.4,0,.2,1); }
-    .faq-item--open .faq-a { max-height:400px; }
-    .faq-a-inner { padding-bottom:20px;font-size:.9rem;color:var(--color-muted);line-height:1.7; }
-
-    /* Misc */
-    .section-label { font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ff1a1a;margin-bottom:12px;display:block; }
-    .divider { height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent); }
-    .chip { display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;padding:4px 10px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--color-muted); }
-    .green-dot { width:6px;height:6px;border-radius:50%;background:#34d399;flex-shrink:0;animation:pulse 2s ease-in-out infinite; }
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
-    ::selection { background:#ff1a1a;color:#fff; }
-
-    /* Back to top */
-    .btt { position:fixed;bottom:2rem;right:2rem;z-index:900;width:44px;height:44px;border-radius:50%;background:#ff1a1a;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(255,26,26,.35);opacity:0;visibility:hidden;transform:translateY(12px);transition:all .3s ease; }
-    .btt:hover { background:#e01515;transform:translateY(-2px); }
-    .btt--vis { opacity:1;visibility:visible;transform:translateY(0); }
-
-    /* Cookie */
-    .cookie-banner { position:fixed;bottom:0;left:0;right:0;z-index:9998;transform:translateY(100%);transition:transform .5s cubic-bezier(.16,1,.3,1); }
-    .cookie-banner--vis { transform:translateY(0); }
-    .cookie-inner { max-width:660px;margin:0 auto 24px;padding:22px 26px;background:rgba(255,255,255,.96);backdrop-filter:blur(20px);border-radius:18px;border:1px solid rgba(0,0,0,.08);box-shadow:0 20px 60px rgba(0,0,0,.12); }
-
-    /* Mobile overrides */
-    @media(max-width:767px){
-      #hero{padding-top:7rem!important;}
-      .iphone-frame{width:240px;}
-      .price-card{padding:28px 20px;}
+    body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text-main); }
+    h1, h2, h3, h4, .font-display { font-family: var(--font-display); }
+    .gradient-text {
+      background: linear-gradient(135deg, #3b82f6, #93c5fd);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
-<body class="relative overflow-x-hidden">
+<body class="overflow-x-hidden antialiased">
 
-<!-- Orbs -->
-<div class="orb-wrap" aria-hidden="true">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-</div>
+  <!-- ═══ NAVBAR ═══════════════════════════════════════════════ -->
+  <header id="nav" class="fixed top-0 left-0 right-0 z-[100] transition-all duration-300 py-4">
+    <div class="max-w-7xl mx-auto px-5 flex items-center justify-between gap-4">
 
-<!-- Mobile Menu -->
-<div id="mobileMenu" role="dialog" aria-modal="true" aria-label="Navigation">
-  <button class="mm-close" id="mmClose" aria-label="Menü schließen">
-    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-  </button>
-  <div style="font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:24px;letter-spacing:-.04em;">TRACE</div>
-  <div class="mm-grid">
-    <a href="#funktionen" class="mm-link">Funktionen</a>
-    <a href="#workflow"   class="mm-link">Ablauf</a>
-    <a href="#rollen"     class="mm-link">Rollen</a>
-    <a href="#preise"     class="mm-link">Preise</a>
-    <a href="#faq"        class="mm-link">FAQ</a>
-    <a href="impressum.html" class="mm-link">Impressum</a>
-    <a href="#preise" class="mm-link mm-link--full" style="background:rgba(255,26,26,.15);border-color:rgba(255,26,26,.4);color:#ff6b6b;">Kostenlos starten</a>
-  </div>
-</div>
-
-<!-- Ticker -->
-<div class="relative z-30 overflow-hidden bg-black border-b border-white/5" style="height:40px;" aria-label="Feature-Highlights">
-  <div class="ticker-rail">
-    <div class="ticker-track" aria-hidden="true">
-      <span class="ticker-item">Zeiterfassung</span>
-      <span class="ticker-item">Genehmigungsworkflow</span>
-      <span class="ticker-item">E-Mail-Versand</span>
-      <span class="ticker-item">Export-Vorlagen</span>
-      <span class="ticker-item">Kalender-Integration</span>
-      <span class="ticker-item">Outlook &amp; Google</span>
-      <span class="ticker-item">DSGVO-konform</span>
-      <span class="ticker-item">Made in Germany</span>
-      <span class="ticker-item">Zeiterfassung</span>
-      <span class="ticker-item">Genehmigungsworkflow</span>
-      <span class="ticker-item">E-Mail-Versand</span>
-      <span class="ticker-item">Export-Vorlagen</span>
-      <span class="ticker-item">Kalender-Integration</span>
-      <span class="ticker-item">Outlook &amp; Google</span>
-      <span class="ticker-item">DSGVO-konform</span>
-      <span class="ticker-item">Made in Germany</span>
-    </div>
-  </div>
-</div>
-
-<!-- Nav -->
-<nav id="nav" class="fixed top-10 left-0 right-0 z-40 transition-all duration-300" style="background:transparent;" aria-label="Hauptnavigation">
-  <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
-    <a href="#hero" class="font-black text-lg text-white" style="letter-spacing:-.04em;">TRACE</a>
-    <div class="hidden md:flex nav-pill">
-      <a href="#funktionen" class="nav-l" data-section="funktionen">Funktionen</a>
-      <a href="#workflow"   class="nav-l" data-section="workflow">Ablauf</a>
-      <a href="#rollen"     class="nav-l" data-section="rollen">Rollen</a>
-      <a href="#preise"     class="nav-l" data-section="preise">Preise</a>
-      <a href="#faq"        class="nav-l" data-section="faq">FAQ</a>
-    </div>
-    <div class="hidden md:flex items-center gap-3">
-      <a href="#preise" class="btn-primary" style="padding:10px 22px;font-size:.82rem;">Kostenlos starten</a>
-    </div>
-    <button class="nav-hbg" id="navHbg" aria-label="Menü öffnen" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- HERO                                                        -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="hero" class="relative z-10 pt-32 pb-20 px-5 overflow-hidden" style="min-height:100vh;display:flex;align-items:center;">
-  <div class="max-w-6xl mx-auto w-full">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-      <!-- Copy -->
-      <div>
-        <div class="inline-flex items-center gap-2 mb-6 chip">
-          <span class="green-dot"></span>
-          <span>Entwickelt in Deutschland · DSGVO-konform</span>
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/40">
+          <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+          </svg>
         </div>
-        <h1 class="text-5xl md:text-6xl font-black tracking-tight leading-tight mb-6" style="letter-spacing:-.04em;">
-          Zeiterfassung&nbsp;&amp;<br>Genehmigung.<br>
-          <span class="grad-red">Endlich einfach.</span>
-        </h1>
-        <p class="text-lg leading-relaxed mb-8 max-w-lg" style="color:#94a3b8;">
-          TRACE digitalisiert deinen gesamten Zeiterfassungsprozess – von der Erfassung über die Einreichung bis zur Genehmigung – inklusive automatischem E-Mail-Versand, eigenen Export-Vorlagen und Kalenderanbindung.
-        </p>
-        <div class="flex flex-wrap gap-3 mb-10">
-          <a href="#preise" class="btn-primary">
-            30 Tage kostenlos testen
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="#funktionen" class="btn-ghost">Funktionen entdecken</a>
-        </div>
-        <div class="flex flex-wrap gap-5 text-sm" style="color:#64748b;">
-          <span class="flex items-center gap-2"><svg width="14" height="14" fill="none" stroke="#34d399" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Keine Kreditkarte nötig</span>
-          <span class="flex items-center gap-2"><svg width="14" height="14" fill="none" stroke="#34d399" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>30-Tage Trial inklusive</span>
-          <span class="flex items-center gap-2"><svg width="14" height="14" fill="none" stroke="#34d399" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>EU-Server, DSGVO-konform</span>
-        </div>
-      </div>
-
-      <!-- iPhone -->
-      <div class="iphone-wrap reveal">
-        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:320px;height:320px;background:radial-gradient(circle,rgba(255,26,26,.1) 0%,transparent 70%);pointer-events:none;" aria-hidden="true"></div>
-        <div class="iphone-frame">
-          <div class="iphone-screen">
-            <div class="dyn-island" aria-hidden="true"></div>
-            <!-- Statusbar -->
-            <div style="display:flex;justify-content:space-between;padding:5px 16px 0;position:absolute;top:0;left:0;right:0;z-index:5;font-size:.52rem;font-weight:700;color:rgba(255,255,255,.6);">
-              <span>9:41</span>
-              <div style="display:flex;gap:4px;align-items:center;">
-                <svg width="10" height="8" fill="rgba(255,255,255,.6)" viewBox="0 0 20 16"><rect x="0" y="10" width="3" height="6" rx=".5"/><rect x="4.5" y="7" width="3" height="9" rx=".5"/><rect x="9" y="4" width="3" height="12" rx=".5"/><rect x="13.5" y="1" width="3" height="15" rx=".5" opacity=".3"/></svg>
-                <svg width="12" height="8" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.8" viewBox="0 0 24 16"><rect x="1" y="3" width="18" height="10" rx="2"/><path d="M21 7v2" stroke-linecap="round"/></svg>
-              </div>
-            </div>
-            <!-- Topbar -->
-            <div class="trace-topbar">
-              <span class="trace-topbar-title">Meine Zeiten · 2026</span>
-              <div style="display:flex;gap:5px;">
-                <span class="tc-icon">
-                  <svg width="10" height="10" fill="none" stroke="#ff6b6b" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-                </span>
-                <span class="tc-icon">
-                  <svg width="10" height="10" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                </span>
-              </div>
-            </div>
-            <!-- Filter row -->
-            <div style="display:flex;gap:5px;padding:5px 8px 3px;position:absolute;top:84px;left:0;right:0;z-index:5;">
-              <div style="padding:3px 8px;border-radius:5px;background:rgba(255,26,26,.15);border:1px solid rgba(255,26,26,.3);font-size:.5rem;font-weight:700;color:#ff6b6b;">Intern</div>
-              <div style="padding:3px 8px;border-radius:5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.5rem;font-weight:600;color:rgba(255,255,255,.35);">Extern</div>
-            </div>
-            <!-- Month cards -->
-            <div class="trace-grid">
-              <div class="trace-card tc-amber">
-                <div class="tc-month">April</div>
-                <div class="tc-hours">152<sub>h</sub></div>
-                <div class="tc-badge badge-pend">● Eingereicht</div>
-              </div>
-              <div class="trace-card tc-green">
-                <div class="tc-month">März</div>
-                <div class="tc-hours">168<sub>h</sub></div>
-                <div class="tc-badge badge-ok">✓ Genehmigt</div>
-              </div>
-              <div class="trace-card tc-red">
-                <div class="tc-month">Februar</div>
-                <div class="tc-hours">160<sub>h</sub></div>
-                <div class="tc-badge badge-rej">✕ Abgelehnt</div>
-              </div>
-              <div class="trace-card tc-muted">
-                <div class="tc-month">Januar</div>
-                <div class="tc-hours">0<sub>h</sub></div>
-                <div class="tc-badge badge-drft">Entwurf</div>
-              </div>
-              <div class="trace-card tc-green" style="opacity:.55;">
-                <div class="tc-month">Dezember</div>
-                <div class="tc-hours">176<sub>h</sub></div>
-                <div class="tc-badge badge-ok">✓ Genehmigt</div>
-              </div>
-              <div class="trace-card tc-green" style="opacity:.55;">
-                <div class="tc-month">November</div>
-                <div class="tc-hours">168<sub>h</sub></div>
-                <div class="tc-badge badge-ok">✓ Genehmigt</div>
-              </div>
-            </div>
-            <!-- Bottom nav -->
-            <div class="trace-navbar">
-              <div class="tnav-item tnav-item--active">
-                <svg width="16" height="16" fill="none" stroke="#ff6b6b" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-                <span class="tnav-lbl" style="color:#ff6b6b;">Zeiten</span>
-              </div>
-              <div class="tnav-item">
-                <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                <span class="tnav-lbl">Dashboard</span>
-              </div>
-              <div class="tnav-item">
-                <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                <span class="tnav-lbl">Genehmig.</span>
-              </div>
-              <div class="tnav-item">
-                <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                <span class="tnav-lbl">Profil</span>
-              </div>
-            </div>
-          </div><!-- /iphone-screen -->
-        </div><!-- /iphone-frame -->
-      </div><!-- /iphone-wrap -->
-
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- Tech stack chips -->
-<section class="relative z-10 py-10 px-5" style="background:rgba(255,255,255,.015);">
-  <div class="max-w-4xl mx-auto text-center">
-    <p class="text-xs font-semibold tracking-widest uppercase mb-5" style="color:#475569;">Gebaut mit modernem Stack</p>
-    <div class="flex flex-wrap justify-center gap-3">
-      <span class="chip">Next.js 15</span>
-      <span class="chip">React 19</span>
-      <span class="chip">TypeScript</span>
-      <span class="chip">Supabase</span>
-      <span class="chip">Tailwind CSS</span>
-      <span class="chip">Vercel (EU)</span>
-      <span class="chip">DSGVO-konform</span>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- HAUPTFUNKTIONEN                                             -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="funktionen" class="relative z-10 py-24 px-5">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-16 reveal">
-      <span class="section-label">Hauptfunktionen</span>
-      <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-4" style="letter-spacing:-.03em;">Alles, was dein Team braucht.</h2>
-      <p class="text-lg max-w-xl mx-auto" style="color:#94a3b8;">Vier Kernfunktionen, die den gesamten Zeiterfassungsprozess digitalisieren.</p>
-    </div>
-
-    <!-- F1: Einreichung -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
-      <div class="reveal">
-        <span class="section-label">01 · Einreichung</span>
-        <h3 class="text-3xl font-black tracking-tight mb-4" style="letter-spacing:-.03em;">Zeiten erfassen &amp; einreichen – mit einem Klick.</h3>
-        <p class="mb-6 leading-relaxed" style="color:#94a3b8;">Mitarbeiter erfassen Stunden monatlich als Intern oder Extern, reichen direkt aus der App ein und verfolgen den Status in Echtzeit. Kein Papier, keine E-Mail-Anhänge.</p>
-        <ul class="space-y-3 text-sm" style="color:#94a3b8;">
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Monatsweise Zeiterfassung (Intern &amp; Extern)</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Status: Entwurf → Eingereicht → Genehmigt</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Kommentare &amp; Ablehnungsgründe in der App</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Kachel- und Listenansicht wählbar</li>
-        </ul>
-      </div>
-      <div class="reveal">
-        <div class="browser-wrap">
-          <div class="browser-bar"><div class="bdots"><span class="bd1"></span><span class="bd2"></span><span class="bd3"></span></div><div class="burl">app.trace.wamocon.de/time-entries</div></div>
-          <div style="background:#060e1c;padding:16px;min-height:220px;">
-            <div style="display:flex;gap:7px;margin-bottom:12px;">
-              <div style="padding:4px 10px;border-radius:6px;background:rgba(255,26,26,.15);border:1px solid rgba(255,26,26,.3);font-size:.65rem;font-weight:700;color:#ff6b6b;">Intern</div>
-              <div style="padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.65rem;font-weight:600;color:rgba(255,255,255,.35);">Extern</div>
-              <div style="margin-left:auto;padding:4px 8px;border-radius:6px;background:rgba(255,255,255,.04);font-size:.6rem;color:rgba(255,255,255,.3);">⊞ Grid</div>
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-              <div style="background:rgba(234,179,8,.05);border:1px solid rgba(234,179,8,.2);border-radius:12px;padding:12px 10px;">
-                <div style="font-size:.55rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:5px;">April</div>
-                <div style="font-size:1.05rem;font-weight:800;color:#f0f0f2;">152<span style="font-size:.6rem;color:rgba(255,255,255,.3);">h</span></div>
-                <div style="font-size:.5rem;padding:2px 5px;border-radius:4px;background:rgba(234,179,8,.15);color:rgba(234,179,8,.9);margin-top:5px;display:inline-block;font-weight:700;">● Eingereicht</div>
-              </div>
-              <div style="background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:12px 10px;">
-                <div style="font-size:.55rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:5px;">März</div>
-                <div style="font-size:1.05rem;font-weight:800;color:#f0f0f2;">168<span style="font-size:.6rem;color:rgba(255,255,255,.3);">h</span></div>
-                <div style="font-size:.5rem;padding:2px 5px;border-radius:4px;background:rgba(52,211,153,.15);color:rgba(52,211,153,.9);margin-top:5px;display:inline-block;font-weight:700;">✓ Genehmigt</div>
-              </div>
-              <div style="background:rgba(255,26,26,.04);border:1px solid rgba(255,26,26,.12);border-radius:12px;padding:12px 10px;">
-                <div style="font-size:.55rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:5px;">Februar</div>
-                <div style="font-size:1.05rem;font-weight:800;color:#f0f0f2;">160<span style="font-size:.6rem;color:rgba(255,255,255,.3);">h</span></div>
-                <div style="font-size:.5rem;padding:2px 5px;border-radius:4px;background:rgba(255,26,26,.15);color:rgba(255,100,100,.9);margin-top:5px;display:inline-block;font-weight:700;">✕ Abgelehnt</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- F2: E-Mail -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
-      <div class="reveal order-2 lg:order-1">
-        <div class="browser-wrap">
-          <div class="browser-bar"><div class="bdots"><span class="bd1"></span><span class="bd2"></span><span class="bd3"></span></div><div class="burl">app.trace.wamocon.de/admin/email-settings</div></div>
-          <div style="background:#060e1c;padding:16px;min-height:220px;">
-            <div style="font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:10px;">E-Mail-Konfiguration</div>
-            <div style="display:flex;gap:5px;margin-bottom:10px;">
-              <div style="flex:1;padding:7px 8px;border-radius:7px;background:rgba(255,26,26,.12);border:1px solid rgba(255,26,26,.3);font-size:.62rem;font-weight:700;color:#ff6b6b;text-align:center;">Gmail</div>
-              <div style="flex:1;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.62rem;color:rgba(255,255,255,.3);text-align:center;">Outlook</div>
-              <div style="flex:1;padding:7px 8px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.62rem;color:rgba(255,255,255,.3);text-align:center;">SMTP</div>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:6px;">
-              <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:9px 11px;">
-                <div style="font-size:.55rem;color:rgba(255,255,255,.25);margin-bottom:3px;">Absender-Adresse</div>
-                <div style="font-size:.68rem;color:rgba(255,255,255,.65);">trace@mein-unternehmen.de</div>
-              </div>
-              <div style="background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.15);border-radius:8px;padding:7px 11px;display:flex;justify-content:space-between;align-items:center;">
-                <span style="font-size:.62rem;color:rgba(52,211,153,.8);">✓ Verbindung aktiv</span>
-                <span style="font-size:.58rem;color:rgba(255,255,255,.25);">Test senden</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="reveal order-1 lg:order-2">
-        <span class="section-label">02 · E-Mail-Versand</span>
-        <h3 class="text-3xl font-black tracking-tight mb-4" style="letter-spacing:-.03em;">Automatischer E-Mail-Versand bei jeder Aktion. <span style="color:#64748b;font-size:.75em;">(Pro)</span></h3>
-        <p class="mb-6 leading-relaxed" style="color:#94a3b8;">Bei Einreichung, Genehmigung oder Ablehnung verschickt TRACE automatisch E-Mails – über Gmail, Outlook oder SMTP. Deine eigene Domain, deine eigene Absenderadresse.</p>
-        <ul class="space-y-3 text-sm" style="color:#94a3b8;">
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Gmail OAuth2, Outlook OAuth2, SMTP</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Automatische Benachrichtigungen</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Eigene Absender-Adresse</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Verbindungstest direkt in der App</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- F3: Vorlagen -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
-      <div class="reveal">
-        <span class="section-label">03 · Export mit eigenen Vorlagen</span>
-        <h3 class="text-3xl font-black tracking-tight mb-4" style="letter-spacing:-.03em;">PDF- &amp; DOCX-Export mit deinem Briefkopf. <span style="color:#64748b;font-size:.75em;">(Pro)</span></h3>
-        <p class="mb-6 leading-relaxed" style="color:#94a3b8;">Lade eigene Word- oder PDF-Vorlagen hoch – TRACE befüllt sie automatisch mit den Zeitdaten. Dein Corporate Design, jederzeit. Genehmiger-Unterschrift digital integrierbar.</p>
-        <ul class="space-y-3 text-sm" style="color:#94a3b8;">
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>DOCX- und PDF-Vorlagen uploadbar</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Automatische Befüllung mit Zeitdaten</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Genehmiger-Unterschrift digital integrierbar</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Mehrere Vorlagen pro Organisation verwaltbar</li>
-        </ul>
-      </div>
-      <div class="reveal">
-        <div class="browser-wrap">
-          <div class="browser-bar"><div class="bdots"><span class="bd1"></span><span class="bd2"></span><span class="bd3"></span></div><div class="burl">app.trace.wamocon.de/admin → Vorlagen</div></div>
-          <div style="background:#060e1c;padding:16px;min-height:220px;">
-            <div style="font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:10px;">Vorlagenverwaltung</div>
-            <div style="display:flex;flex-direction:column;gap:7px;">
-              <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                  <div style="font-size:.7rem;font-weight:700;color:#f0f0f2;">Stundennachweis_2026.docx</div>
-                  <div style="font-size:.58rem;color:rgba(255,255,255,.25);">DOCX · Standard · 12 KB</div>
-                </div>
-                <div style="font-size:.55rem;font-weight:700;padding:3px 7px;border-radius:5px;background:rgba(52,211,153,.12);color:rgba(52,211,153,.8);">Aktiv</div>
-              </div>
-              <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                  <div style="font-size:.7rem;font-weight:700;color:#f0f0f2;">Extern_Vorlage_v2.pdf</div>
-                  <div style="font-size:.58rem;color:rgba(255,255,255,.25);">PDF · Extern · 24 KB</div>
-                </div>
-                <div style="font-size:.55rem;font-weight:700;padding:3px 7px;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.35);">Inaktiv</div>
-              </div>
-              <div style="border:1.5px dashed rgba(255,255,255,.08);border-radius:9px;padding:10px;display:flex;align-items:center;justify-content:center;gap:5px;">
-                <svg width="11" height="11" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-                <span style="font-size:.62rem;color:rgba(255,255,255,.25);">Neue Vorlage hochladen</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- F4: Kalender -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-      <div class="reveal order-2 lg:order-1">
-        <div class="browser-wrap">
-          <div class="browser-bar"><div class="bdots"><span class="bd1"></span><span class="bd2"></span><span class="bd3"></span></div><div class="burl">app.trace.wamocon.de/calendar</div></div>
-          <div style="background:#060e1c;padding:14px;min-height:260px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-              <span style="font-size:.7rem;font-weight:700;color:#f0f0f2;">April 2026</span>
-              <div style="display:flex;gap:4px;">
-                <span style="font-size:.55rem;padding:2px 7px;border-radius:4px;background:rgba(255,26,26,.12);color:#ff6b6b;font-weight:700;">Outlook</span>
-                <span style="font-size:.55rem;padding:2px 7px;border-radius:4px;background:rgba(56,189,248,.12);color:#38bdf8;font-weight:700;">Google</span>
-              </div>
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;">
-              <div style="text-align:center;font-size:.5rem;font-weight:700;color:rgba(255,255,255,.25);">Mo</div>
-              <div style="text-align:center;font-size:.5rem;font-weight:700;color:rgba(255,255,255,.25);">Di</div>
-              <div style="text-align:center;font-size:.5rem;font-weight:700;color:rgba(255,255,255,.25);">Mi</div>
-              <div style="text-align:center;font-size:.5rem;font-weight:700;color:rgba(255,255,255,.25);">Do</div>
-              <div style="text-align:center;font-size:.5rem;font-weight:700;color:rgba(255,255,255,.25);">Fr</div>
-              <div style="text-align:center;font-size:.5rem;font-weight:700;color:rgba(255,255,255,.25);">Sa</div>
-              <div style="text-align:center;font-size:.5rem;font-weight:700;color:rgba(255,255,255,.25);">So</div>
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;">
-              <div style="height:26px;border-radius:4px;background:rgba(255,255,255,.02);"></div>
-              <div style="height:26px;border-radius:4px;background:rgba(255,255,255,.02);"></div>
-              <div style="height:26px;border-radius:4px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:#38bdf8;font-weight:700;">1</div>
-              <div style="height:26px;border-radius:4px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:rgba(255,255,255,.45);">2</div>
-              <div style="height:26px;border-radius:4px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:rgba(255,255,255,.45);">3</div>
-              <div style="height:26px;border-radius:4px;background:rgba(255,255,255,.01);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:rgba(255,255,255,.2);">4</div>
-              <div style="height:26px;border-radius:4px;background:rgba(255,255,255,.01);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:rgba(255,255,255,.2);">5</div>
-              <div style="height:26px;border-radius:4px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.15);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:#34d399;font-weight:700;">6</div>
-              <div style="height:26px;border-radius:4px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.15);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:#34d399;font-weight:700;">7</div>
-              <div style="height:26px;border-radius:4px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.15);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:#34d399;font-weight:700;">8</div>
-              <div style="height:26px;border-radius:4px;background:rgba(255,26,26,.12);border:1px solid rgba(255,26,26,.25);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:#ff6b6b;font-weight:800;">9</div>
-              <div style="height:26px;border-radius:4px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.15);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:#34d399;font-weight:700;">10</div>
-              <div style="height:26px;border-radius:4px;background:rgba(255,255,255,.01);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:rgba(255,255,255,.2);">11</div>
-              <div style="height:26px;border-radius:4px;background:rgba(255,255,255,.01);display:flex;align-items:center;justify-content:center;font-size:.56rem;color:rgba(255,255,255,.2);">12</div>
-            </div>
-            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
-              <div style="display:flex;align-items:center;gap:3px;font-size:.52rem;color:rgba(255,255,255,.3);"><div style="width:7px;height:7px;border-radius:2px;background:rgba(52,211,153,.3);"></div> Genehmigt</div>
-              <div style="display:flex;align-items:center;gap:3px;font-size:.52rem;color:rgba(255,255,255,.3);"><div style="width:7px;height:7px;border-radius:2px;background:rgba(255,26,26,.3);"></div> Abgelehnt</div>
-              <div style="display:flex;align-items:center;gap:3px;font-size:.52rem;color:rgba(255,255,255,.3);"><div style="width:7px;height:7px;border-radius:2px;background:rgba(56,189,248,.3);"></div> Kalender-Sync</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="reveal order-1 lg:order-2">
-        <span class="section-label">04 · Kalenderintegration</span>
-        <h3 class="text-3xl font-black tracking-tight mb-4" style="letter-spacing:-.03em;">Kalender mit Outlook &amp; Google verbinden. <span style="color:#64748b;font-size:.75em;">(Sync: Pro)</span></h3>
-        <p class="mb-6 leading-relaxed" style="color:#94a3b8;">Der eingebettete Monatskalender zeigt alle Zeiteinträge mit Genehmigungsstatus auf einen Blick. Outlook- und Google-Sync synchronisieren genehmigte Einträge automatisch.</p>
-        <ul class="space-y-3 text-sm" style="color:#94a3b8;">
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Eingebetteter Monatskalender (alle Pläne)</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Farbcodierung nach Genehmigungsstatus</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Feiertage (DE/Hessen) automatisch markiert</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Outlook-Kalender-Sync (Pro)</li>
-          <li class="flex items-center gap-3"><span class="ck ck-ok">✓</span>Google-Kalender-Sync (Pro)</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- WORKFLOW                                                     -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="workflow" class="relative z-10 py-24 px-5" style="background:rgba(255,255,255,.015);">
-  <div class="max-w-5xl mx-auto">
-    <div class="text-center mb-16 reveal">
-      <span class="section-label">Ablauf</span>
-      <h2 class="text-4xl font-black tracking-tight mb-4" style="letter-spacing:-.03em;">Drei Schritte. Ein klarer Prozess.</h2>
-      <p class="max-w-lg mx-auto" style="color:#94a3b8;">Von der Erfassung bis zur genehmigten Abrechnung führt TRACE alle Beteiligten sicher durch den Prozess.</p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="feat-card reveal">
-        <div class="feat-icon" style="background:rgba(56,189,248,.1);">
-          <svg width="24" height="24" fill="none" stroke="#38bdf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        </div>
-        <div class="text-xs font-bold tracking-widest uppercase mb-2" style="color:#475569;">Schritt 1</div>
-        <h3 class="text-xl font-black tracking-tight mb-3">Zeiten erfassen</h3>
-        <p class="text-sm leading-relaxed" style="color:#94a3b8;">Der Mitarbeiter trägt Stunden monatlich ein. Voreinstellungen aus dem Nutzerprofil werden automatisch vorausgefüllt.</p>
-      </div>
-      <div class="feat-card reveal" style="transition-delay:.1s;">
-        <div class="feat-icon" style="background:rgba(234,179,8,.1);">
-          <svg width="24" height="24" fill="none" stroke="#f59e0b" stroke-width="1.8" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-        </div>
-        <div class="text-xs font-bold tracking-widest uppercase mb-2" style="color:#475569;">Schritt 2</div>
-        <h3 class="text-xl font-black tracking-tight mb-3">Einreichen &amp; benachrichtigen</h3>
-        <p class="text-sm leading-relaxed" style="color:#94a3b8;">Mit einem Klick wird der Monat eingereicht. TRACE sendet automatisch eine E-Mail an den zuständigen Genehmiger.</p>
-      </div>
-      <div class="feat-card reveal" style="transition-delay:.2s;">
-        <div class="feat-icon" style="background:rgba(52,211,153,.1);">
-          <svg width="24" height="24" fill="none" stroke="#34d399" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        </div>
-        <div class="text-xs font-bold tracking-widest uppercase mb-2" style="color:#475569;">Schritt 3</div>
-        <h3 class="text-xl font-black tracking-tight mb-3">Genehmigen &amp; exportieren</h3>
-        <p class="text-sm leading-relaxed" style="color:#94a3b8;">Der Genehmiger prüft, unterschreibt digital und gibt frei. Der Mitarbeiter exportiert mit seiner Vorlage als PDF oder DOCX.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- ROLLEN                                                       -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="rollen" class="relative z-10 py-24 px-5">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-16 reveal">
-      <span class="section-label">Für alle Beteiligten</span>
-      <h2 class="text-4xl font-black tracking-tight mb-4" style="letter-spacing:-.03em;">Drei Rollen. Eine App.</h2>
-      <p class="max-w-lg mx-auto" style="color:#94a3b8;">TRACE kennt drei Rollen – jede mit genau den Rechten, die sie braucht.</p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Mitarbeiter -->
-      <div class="role-card reveal" style="background:rgba(255,255,255,.02);">
-        <div style="padding:24px;border-bottom:1px solid rgba(255,255,255,.06);">
-          <span class="role-tag mb-3" style="background:rgba(56,189,248,.1);color:#38bdf8;">Mitarbeiter</span>
-          <h3 class="text-xl font-black tracking-tight mt-3 mb-2">Zeiten erfassen &amp; einreichen</h3>
-          <p class="text-sm" style="color:#94a3b8;">Erfasst Stunden, verfolgt den Status und exportiert nach Genehmigung.</p>
-        </div>
-        <div style="padding:24px;">
-          <ul class="space-y-2 text-sm" style="color:#94a3b8;">
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Zeiterfassung (Intern &amp; Extern)</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Einreichung &amp; Status-Tracking</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Kalenderansicht</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>PDF/DOCX-Export</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Eigene Einstellungen &amp; Vorbefüllung</li>
-          </ul>
-        </div>
-      </div>
-      <!-- Genehmiger -->
-      <div class="role-card reveal" style="transition-delay:.1s;background:rgba(255,26,26,.03);border-color:rgba(255,26,26,.12)!important;">
-        <div style="padding:24px;border-bottom:1px solid rgba(255,26,26,.08);">
-          <span class="role-tag mb-3" style="background:rgba(255,26,26,.1);color:#ff6b6b;">Genehmiger</span>
-          <h3 class="text-xl font-black tracking-tight mt-3 mb-2">Prüfen &amp; genehmigen</h3>
-          <p class="text-sm" style="color:#94a3b8;">Erhält Benachrichtigungen, prüft Einreichungen und unterschreibt digital.</p>
-        </div>
-        <div style="padding:24px;">
-          <ul class="space-y-2 text-sm" style="color:#94a3b8;">
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Alle Einreichungen im Überblick</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Genehmigen / Ablehnen mit Kommentar</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Digitale Unterschrift (Pro)</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>E-Mail-Benachrichtigungen</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Archiv abgeschlossener Monate</li>
-          </ul>
-        </div>
-      </div>
-      <!-- Admin -->
-      <div class="role-card reveal" style="transition-delay:.2s;background:rgba(255,255,255,.02);">
-        <div style="padding:24px;border-bottom:1px solid rgba(255,255,255,.06);">
-          <span class="role-tag mb-3" style="background:rgba(52,211,153,.1);color:#34d399;">Admin</span>
-          <h3 class="text-xl font-black tracking-tight mt-3 mb-2">Organisation verwalten</h3>
-          <p class="text-sm" style="color:#94a3b8;">Verwaltet Nutzer, Vorlagen, E-Mail-Einstellungen und Org-Konfiguration.</p>
-        </div>
-        <div style="padding:24px;">
-          <ul class="space-y-2 text-sm" style="color:#94a3b8;">
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Nutzerverwaltung &amp; Rollen-Zuweisung</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Organisationsverwaltung (Pro)</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Vorlagenverwaltung (Pro)</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>E-Mail-Konfiguration (Pro)</li>
-            <li class="flex items-center gap-2"><span class="ck ck-ok">✓</span>Berichte &amp; Analysen (Pro)</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- WEITERE FEATURES                                             -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="mehr" class="relative z-10 py-24 px-5" style="background:rgba(255,255,255,.015);">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-14 reveal">
-      <span class="section-label">Weitere Funktionen</span>
-      <h2 class="text-3xl font-black tracking-tight" style="letter-spacing:-.03em;">Noch mehr drin.</h2>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div class="feat-card reveal">
-        <div class="feat-icon" style="background:rgba(99,102,241,.1);"><svg width="22" height="22" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
-        <h4 class="font-black tracking-tight mb-2">Benutzerverwaltung</h4>
-        <p class="text-sm" style="color:#94a3b8;">Nutzer einladen, Rollen zuweisen, Einladungslinks generieren – alles im Admin-Panel.</p>
-      </div>
-      <div class="feat-card reveal" style="transition-delay:.05s;">
-        <div class="feat-icon" style="background:rgba(234,179,8,.1);"><svg width="22" height="22" fill="none" stroke="#f59e0b" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div>
-        <h4 class="font-black tracking-tight mb-2">Organisationsverwaltung <span style="font-size:.7rem;color:#64748b;">(Pro)</span></h4>
-        <p class="text-sm" style="color:#94a3b8;">Mehrere Organisationen in einem System verwalten. Jede mit eigenem Plan.</p>
-      </div>
-      <div class="feat-card reveal" style="transition-delay:.1s;">
-        <div class="feat-icon" style="background:rgba(52,211,153,.1);"><svg width="22" height="22" fill="none" stroke="#34d399" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></div>
-        <h4 class="font-black tracking-tight mb-2">Berichte &amp; Analysen <span style="font-size:.7rem;color:#64748b;">(Pro)</span></h4>
-        <p class="text-sm" style="color:#94a3b8;">Gefilterte Berichte nach Nutzern, Zeiträumen und Typen. Für Admins und Genehmiger.</p>
-      </div>
-      <div class="feat-card reveal" style="transition-delay:.15s;">
-        <div class="feat-icon" style="background:rgba(255,26,26,.1);"><svg width="22" height="22" fill="none" stroke="#ff6b6b" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <h4 class="font-black tracking-tight mb-2">Nutzer-Einstellungen</h4>
-        <p class="text-sm" style="color:#94a3b8;">Zeitzone, Datumsformat, Sprache und automatische Vorbefüllung konfigurierbar.</p>
-      </div>
-      <div class="feat-card reveal" style="transition-delay:.2s;">
-        <div class="feat-icon" style="background:rgba(56,189,248,.1);"><svg width="22" height="22" fill="none" stroke="#38bdf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <h4 class="font-black tracking-tight mb-2">DSGVO &amp; Rechtliches</h4>
-        <p class="text-sm" style="color:#94a3b8;">DSGVO-Consent, Cookie-Management und rechtliche Einwilligungen eingebaut.</p>
-      </div>
-      <div class="feat-card reveal" style="transition-delay:.25s;">
-        <div class="feat-icon" style="background:rgba(99,102,241,.1);"><svg width="22" height="22" fill="none" stroke="#818cf8" stroke-width="1.8" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></div>
-        <h4 class="font-black tracking-tight mb-2">Einladungslinks</h4>
-        <p class="text-sm" style="color:#94a3b8;">Neue Mitarbeiter per Einladungslinks onboarden – ohne manuelle Kontoerstellung.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- PREISE                                                       -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="preise" class="relative z-10 py-24 px-5">
-  <div class="max-w-5xl mx-auto">
-    <div class="text-center mb-16 reveal">
-      <span class="section-label">Preismodell</span>
-      <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-4" style="letter-spacing:-.03em;">Transparent. Fair. Skalierbar.</h2>
-      <p class="max-w-xl mx-auto" style="color:#94a3b8;">
-        Beide Pläne beinhalten 30 Tage Trial – keine Kreditkarte erforderlich.<br>
-        <span class="text-xs mt-1 block" style="color:#475569;">Preise basieren auf Marktrecherche (Toggl Track, Clockify, Timeneye; Stand April 2026 – toggl.com, clockify.me, timeneye.com).</span>
-      </p>
-      <!-- Toggle -->
-      <div class="flex items-center justify-center gap-3 mt-6">
-        <span class="text-sm" id="billLabel" style="color:#94a3b8;">Monatlich</span>
-        <button id="billToggle" role="switch" aria-checked="false" class="relative w-11 h-6 rounded-full border transition-all duration-300" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.1);">
-          <span id="billKnob" class="absolute top-0.5 left-1 w-5 h-5 rounded-full transition-all duration-300" style="background:#64748b;"></span>
-        </button>
-        <span class="text-sm" style="color:#94a3b8;">Jährlich <span style="font-size:.75rem;font-weight:700;color:#34d399;">−15%</span></span>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-      <!-- Lite -->
-      <div class="price-card price-lite reveal">
-        <div class="mb-6">
-          <div class="text-xs font-black tracking-widest uppercase mb-2" style="color:#475569;">Lite</div>
-          <div class="price-amount text-white"><span id="litePrice">5,90</span> <span style="font-size:1.1rem;">€</span></div>
-          <div class="text-sm mt-1" style="color:#94a3b8;">pro Nutzer / Monat · bis 25 Nutzer</div>
-          <div class="text-xs mt-1" style="color:#475569;height:1.2em;"><span id="liteAnnual"></span></div>
-        </div>
-        <a href="#" class="btn-ghost w-full justify-center mb-6" style="font-size:.875rem;">30 Tage kostenlos testen</a>
-        <ul class="check-list flex-1">
-          <li><span class="ck ck-ok">✓</span><span>Zeiterfassung &amp; Einreichung</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Genehmigungsworkflow</span></li>
-          <li><span class="ck ck-ok">✓</span><span>In-App Kalender</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Benutzerverwaltung</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Einstellungen &amp; Vorbefüllung</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Einladungslinks</span></li>
-          <li><span class="ck ck-ok">✓</span><span>DSGVO-Consent</span></li>
-          <li><span class="ck ck-no">–</span><span class="opacity-40">E-Mail-Integration</span></li>
-          <li><span class="ck ck-no">–</span><span class="opacity-40">Kalender-Sync (Outlook/Google)</span></li>
-          <li><span class="ck ck-no">–</span><span class="opacity-40">Vorlagenverwaltung (PDF/DOCX)</span></li>
-          <li><span class="ck ck-no">–</span><span class="opacity-40">Berichte &amp; Analysen</span></li>
-          <li><span class="ck ck-no">–</span><span class="opacity-40">Genehmiger-Unterschrift</span></li>
-          <li><span class="ck ck-no">–</span><span class="opacity-40">Mehr als 25 Nutzer</span></li>
-        </ul>
-      </div>
-
-      <!-- Pro -->
-      <div class="price-card price-pro reveal" style="transition-delay:.1s;">
-        <div class="price-badge">Empfohlen</div>
-        <div class="mb-6">
-          <div class="text-xs font-black tracking-widest uppercase mb-2" style="color:rgba(255,100,100,.6);">Pro</div>
-          <div class="price-amount" style="color:#ff6b6b;"><span id="proPrice">11,90</span> <span style="font-size:1.1rem;">€</span></div>
-          <div class="text-sm mt-1" style="color:#94a3b8;">pro Nutzer / Monat · unbegrenzte Nutzer</div>
-          <div class="text-xs mt-1" style="color:#475569;height:1.2em;"><span id="proAnnual"></span></div>
-        </div>
-        <a href="#" class="btn-primary w-full justify-center mb-6" style="font-size:.875rem;">30 Tage kostenlos testen</a>
-        <ul class="check-list flex-1">
-          <li><span class="ck ck-ok">✓</span><span>Alles aus Lite</span></li>
-          <li><span class="ck ck-ok">✓</span><span>E-Mail-Integration (Gmail/Outlook/SMTP)</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Kalender-Sync (Outlook &amp; Google)</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Vorlagenverwaltung (PDF/DOCX)</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Berichte &amp; Analysen</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Genehmiger-Unterschrift digital</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Organisationsverwaltung</span></li>
-          <li><span class="ck ck-ok">✓</span><span>Unbegrenzte Nutzer</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="text-center mt-10 reveal">
-      <p class="text-sm" style="color:#94a3b8;">
-        Jede neue Organisation startet mit einem <strong class="text-white">30-tägigen Trial</strong> auf Lite-Niveau – ohne Kreditkarte.<br>
-        Nach Ablauf persönliche Aktivierung durch das WAMOCON-Team.
-      </p>
-    </div>
-
-    <!-- Innovation Paket (subtle) -->
-    <div class="mt-12 reveal" style="border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:20px 24px;background:rgba(255,255,255,.02);">
-      <p class="text-xs font-black tracking-widest uppercase mb-2" style="color:#334155;">Für größere Teams</p>
-      <p class="text-sm" style="color:#94a3b8;">
-        Nutzt du auch <strong style="color:#cbd5e1;">AWAY</strong> (Urlaubsplanung) oder <strong style="color:#cbd5e1;">TeamRadar</strong> (Verfügbarkeitsmanagement)?
-        TRACE, AWAY und TeamRadar sind Teil des <strong style="color:#cbd5e1;">WAMOCON Innovation-Pakets</strong> – kombinierbar mit Sonderkonditionen.
-        <a href="impressum.html" style="color:#64748b;text-decoration:underline;text-underline-offset:2px;margin-left:4px;">Kontakt aufnehmen →</a>
-      </p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- FAQ                                                          -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<section id="faq" class="relative z-10 py-24 px-5" style="background:rgba(255,255,255,.015);">
-  <div class="max-w-3xl mx-auto">
-    <div class="text-center mb-14 reveal">
-      <span class="section-label">Häufige Fragen</span>
-      <h2 class="text-4xl font-black tracking-tight" style="letter-spacing:-.03em;">FAQ</h2>
-    </div>
-    <div id="faqList">
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="font-semibold text-base">Was enthält der 30-Tage-Trial?</span>
-          <span class="faq-icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">Der Trial aktiviert automatisch alle Lite-Funktionen für 30 Tage – ohne Kreditkarte. Nach Ablauf ist eine manuelle Aktivierung durch das WAMOCON-Team erforderlich. Deine Daten bleiben erhalten.</div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="font-semibold text-base">Was passiert nach dem Trial?</span>
-          <span class="faq-icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">Nach dem 30-Tage-Trial folgt eine Grace Period von weiteren 30 Tagen. Wird kein Plan aktiviert, werden die Daten gelöscht. Du wirst rechtzeitig benachrichtigt. Ein Upgrade kann jederzeit erfolgen.</div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="font-semibold text-base">Was unterscheidet Lite und Pro in der Praxis?</span>
-          <span class="faq-icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">Lite digitalisiert den Genehmigungsprozess für bis zu 25 Nutzer. Pro fügt automatischen E-Mail-Versand, eigene Export-Vorlagen, Kalender-Sync mit Outlook/Google, digitale Unterschriften und Berichte hinzu – für Teams, die den kompletten Prozess automatisieren wollen.</div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="font-semibold text-base">Wo werden meine Daten gespeichert?</span>
-          <span class="faq-icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">TRACE nutzt Supabase mit PostgreSQL auf EU-Servern. Die Anwendung läuft auf Vercel (EU-Region). Alle Daten werden DSGVO-konform verarbeitet. TRACE ist ein deutsches Produkt von WAMOCON.</div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="font-semibold text-base">Wie funktioniert die Kalenderanbindung?</span>
-          <span class="faq-icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">Im Pro-Plan verbindest du TRACE mit deinem Outlook- oder Google-Kalender. Sobald ein Zeiteintrag genehmigt wird, erscheint er automatisch in deinem Kalender. Der eingebettete In-App-Kalender mit Farbcodierung ist in allen Plänen enthalten.</div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">
-          <span class="font-semibold text-base">Gibt es Rabatte für Jahresabonnements?</span>
-          <span class="faq-icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq-a"><div class="faq-a-inner">Ja. Bei jährlicher Abrechnung sparen Sie 15% gegenüber dem monatlichen Preis. Für das WAMOCON Innovation-Paket (TRACE + AWAY + TeamRadar) gibt es Sonderkonditionen – bitte Kontakt aufnehmen.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- TEAM -->
-<section id="team" class="relative z-10 py-20 px-5">
-  <div class="max-w-3xl mx-auto text-center reveal">
-    <span class="section-label">Von WAMOCON</span>
-    <h2 class="text-3xl font-black tracking-tight mb-4" style="letter-spacing:-.03em;">Entwickelt in Deutschland.</h2>
-    <p class="leading-relaxed max-w-xl mx-auto" style="color:#94a3b8;">
-      TRACE ist ein Produkt von <strong class="text-white">WAMOCON</strong> – entwickelt für den deutschen Mittelstand.
-      Alle Funktionen, das Pricing und der Support sind auf den deutschen Markt und die DSGVO ausgerichtet.
-    </p>
-    <div class="inline-flex items-center gap-2 mt-6 chip"><span class="green-dot"></span><span>Entwickelt &amp; betrieben in Deutschland</span></div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- CTA -->
-<section class="relative z-10 py-20 px-5" style="background:linear-gradient(135deg,rgba(255,26,26,.07) 0%,rgba(255,26,26,.02) 100%);">
-  <div class="max-w-3xl mx-auto text-center reveal">
-    <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-4" style="letter-spacing:-.04em;">
-      Jetzt starten.<br><span class="grad-red">30 Tage kostenlos.</span>
-    </h2>
-    <p class="mb-8 text-lg" style="color:#94a3b8;">Keine Kreditkarte. Keine Bindung. Einfach loslegen.</p>
-    <div class="flex flex-wrap gap-3 justify-center">
-      <a href="#preise" class="btn-primary" style="font-size:1rem;padding:15px 32px;">
-        Kostenlos starten
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <span class="text-xl font-black tracking-tight text-white font-display">TRACE</span>
       </a>
-      <a href="impressum.html" class="btn-ghost" style="font-size:1rem;padding:15px 32px;">Kontakt aufnehmen</a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-1 bg-white/6 backdrop-blur border border-white/10 rounded-full px-2 py-1.5">
+        <a href="#features" class="px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors rounded-full hover:bg-white/5" data-de="Features" data-en="Features">Features</a>
+        <a href="#how" class="px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors rounded-full hover:bg-white/5" data-de="Wie es funktioniert" data-en="How it works">Wie es funktioniert</a>
+        <a href="#showcase" class="px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors rounded-full hover:bg-white/5" data-de="App ansehen" data-en="See the App">App ansehen</a>
+        <a href="#roi" class="px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors rounded-full hover:bg-white/5" data-de="ROI Rechner" data-en="ROI Calculator">ROI Rechner</a>
+        <a href="#pricing" class="px-4 py-2 text-sm font-medium text-white/60 hover:text-white transition-colors rounded-full hover:bg-white/5" data-de="Preise" data-en="Pricing">Preise</a>
+      </nav>
+
+      <!-- Right side: Lang + CTA + mobile menu -->
+      <div class="flex items-center gap-3">
+        <!-- Language Toggle -->
+        <div class="lang-toggle hidden md:flex">
+          <button id="lang-de" class="lang-btn active-lang" aria-label="Deutsch">DE</button>
+          <button id="lang-en" class="lang-btn" aria-label="English">EN</button>
+        </div>
+
+        <a href="https://app.trace.wamocon.de/" target="_blank" rel="noopener" class="hidden md:inline-flex items-center bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-full font-semibold text-sm transition-all shadow-lg shadow-blue-900/40 active:scale-95" data-de="Kostenlos starten" data-en="Start free">Kostenlos starten</a>
+
+        <!-- Mobile hamburger -->
+        <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-1.5 p-2" aria-expanded="false" aria-label="Menü">
+          <span class="w-5 h-0.5 bg-white/70 rounded"></span>
+          <span class="w-5 h-0.5 bg-white/70 rounded"></span>
+          <span class="w-5 h-0.5 bg-white/70 rounded"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav Dropdown -->
+    <div id="mobile-nav" class="hidden md:hidden mt-2 mx-4 bg-slate-900/95 backdrop-blur border border-white/10 rounded-2xl p-4">
+      <div class="flex flex-col gap-1">
+        <a href="#features" class="px-4 py-3 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-xl transition-colors" data-de="Features" data-en="Features">Features</a>
+        <a href="#how" class="px-4 py-3 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-xl transition-colors" data-de="Wie es funktioniert" data-en="How it works">Wie es funktioniert</a>
+        <a href="#showcase" class="px-4 py-3 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-xl transition-colors" data-de="App ansehen" data-en="See the App">App ansehen</a>
+        <a href="#roi" class="px-4 py-3 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-xl transition-colors" data-de="ROI Rechner" data-en="ROI Calculator">ROI Rechner</a>
+        <a href="#pricing" class="px-4 py-3 text-sm font-medium text-white/70 hover:text-white hover:bg-white/5 rounded-xl transition-colors" data-de="Preise" data-en="Pricing">Preise</a>
+        <hr class="border-white/10 my-2">
+        <div class="lang-toggle mx-4 mb-2 w-fit">
+          <button id="lang-de-m" class="lang-btn active-lang" aria-label="Deutsch">DE</button>
+          <button id="lang-en-m" class="lang-btn" aria-label="English">EN</button>
+        </div>
+        <a href="https://app.trace.wamocon.de/" target="_blank" rel="noopener" class="bg-blue-600 text-white px-4 py-3 rounded-xl font-semibold text-sm text-center transition-all" data-de="Kostenlos starten" data-en="Start free">Kostenlos starten</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ HERO ══════════════════════════════════════════════════ -->
+  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden" style="background:#0b1220;">
+    <!-- Glow Orbs -->
+    <div class="orb w-[600px] h-[600px] bg-blue-600/25 -top-32 -left-32"></div>
+    <div class="orb w-[500px] h-[500px] bg-sky-600/15 bottom-0 right-0" style="animation-delay:3s;"></div>
+
+    <div class="max-w-7xl mx-auto px-5 pt-28 pb-20 w-full">
+      <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
+
+        <!-- Left: Text -->
+        <div class="flex-1 text-center lg:text-left">
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-4 py-2 rounded-full mb-8 reveal">
+            <span class="flex h-2 w-2 rounded-full bg-blue-400 animate-ping"></span>
+            <span class="text-blue-300 text-xs font-bold uppercase tracking-widest" data-de="Neu: Outlook &amp; Google Kalender-Sync" data-en="New: Outlook &amp; Google Calendar Sync">Neu: Outlook &amp; Google Kalender-Sync</span>
+          </div>
+
+          <h1 class="text-5xl md:text-6xl xl:text-7xl font-black text-white mb-6 tracking-tight font-display leading-[1.05] reveal">
+            <span data-de="Zeiterfassung &amp; Genehmigung." data-en="Time tracking &amp; approval.">Zeiterfassung &amp; Genehmigung.</span><br>
+            <span class="gradient-text" data-de="Endlich einfach." data-en="Finally simple.">Endlich einfach.</span>
+          </h1>
+
+          <p class="text-lg text-white/50 mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0 reveal" data-de="TRACE digitalisiert die Zeiterfassung: von der Monatserfassung über die Einreichung per Wizard bis zur automatischen Benachrichtigung und Kalender-Synchronisation. Kein Excel, keine manuellen E-Mails." data-en="TRACE digitalizes time tracking: from monthly entries to wizard-based submission, automated notifications and calendar sync. No Excel, no manual emails.">
+            TRACE digitalisiert die Zeiterfassung: von der Monatserfassung über die Einreichung per Wizard bis zur automatischen Benachrichtigung und Kalender-Synchronisation. Kein Excel, keine manuellen E-Mails.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-4 justify-center lg:justify-start reveal">
+            <a href="https://app.trace.wamocon.de/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-7 py-4 rounded-2xl font-bold text-base transition-all shadow-xl shadow-blue-900/40 active:scale-95">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span data-de="Kostenlos starten" data-en="Start free">Kostenlos starten</span>
+            </a>
+            <a href="#showcase" class="inline-flex items-center gap-2 border border-white/15 hover:border-white/30 text-white/75 hover:text-white px-7 py-4 rounded-2xl font-bold text-base transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              <span data-de="App ansehen" data-en="See the app">App ansehen</span>
+            </a>
+          </div>
+
+          <!-- Trust indicators -->
+          <div class="mt-10 flex flex-wrap items-center gap-5 justify-center lg:justify-start reveal">
+            <div class="flex items-center gap-2 text-white/35 text-xs font-medium">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              <span data-de="DSGVO-konform" data-en="GDPR compliant">DSGVO-konform</span>
+            </div>
+            <div class="flex items-center gap-2 text-white/35 text-xs font-medium">
+              <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6H8l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/></svg>
+              <span data-de="Entwickelt in Deutschland" data-en="Made in Germany">Entwickelt in Deutschland</span>
+            </div>
+            <div class="flex items-center gap-2 text-white/35 text-xs font-medium">
+              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span data-de="Einrichtung in &lt; 5 Min." data-en="Setup in &lt; 5 min.">Einrichtung in &lt; 5 Min.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: iPhone 15 Pro Titanium -->
+        <div class="flex-shrink-0 reveal flex flex-col items-center gap-6">
+          <div class="iphone-frame">
+            <div class="iphone-inner">
+              <div class="iphone-island"></div>
+              <div class="iphone-screen">
+
+                <!-- Screen 1: Dashboard -->
+                <div class="app-screen active screen-dashboard">
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="screen-logo">TRACE</span>
+                    <div class="screen-avatar"></div>
+                  </div>
+                  <div class="kpi-grid">
+                    <div class="kpi-card">
+                      <div class="kpi-label">Ausstehend</div>
+                      <div class="kpi-value kpi-amber">3</div>
+                    </div>
+                    <div class="kpi-card">
+                      <div class="kpi-label">Genehmigt</div>
+                      <div class="kpi-value kpi-green">18</div>
+                    </div>
+                    <div class="kpi-card">
+                      <div class="kpi-label">Heute zurück</div>
+                      <div class="kpi-value kpi-blue">2</div>
+                    </div>
+                    <div class="kpi-card">
+                      <div class="kpi-label">Resturlaub</div>
+                      <div class="kpi-value" style="color:#fff;">12</div>
+                    </div>
+                  </div>
+                  <div style="font-size:7px;color:rgba(255,255,255,0.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin:4px 0 3px;">Meine Zeiterfassungen</div>
+                  <div class="request-list-item">
+                    <div class="req-avatar"></div>
+                    <div class="req-info"><div class="req-name"></div><div class="req-date"></div></div>
+                    <span class="req-badge badge-green">Genehmigt</span>
+                  </div>
+                  <div class="request-list-item">
+                    <div class="req-avatar" style="background:rgba(245,158,11,0.3);"></div>
+                    <div class="req-info"><div class="req-name"></div><div class="req-date"></div></div>
+                    <span class="req-badge badge-amber">Eingereicht</span>
+                  </div>
+                  <div class="request-list-item">
+                    <div class="req-avatar" style="background:rgba(59,130,246,0.35);"></div>
+                    <div class="req-info"><div class="req-name"></div><div class="req-date"></div></div>
+                    <span class="req-badge badge-blue">Entwurf</span>
+                  </div>
+                </div>
+
+                <!-- Screen 2: Wizard Schritt 2/4 -->
+                <div class="app-screen screen-wizard">
+                  <div class="wizard-steps">
+                    <div class="wstep done"></div>
+                    <div class="wstep active"></div>
+                    <div class="wstep"></div>
+                    <div class="wstep"></div>
+                  </div>
+                  <div class="wizard-title">Monat einreichen</div>
+                  <div class="wizard-sub">Schritt 2 von 3 – Details prüfen</div>
+                  <div class="form-field">
+                    <div class="field-label">Personalnummer</div>
+                    <div class="field-value short" style="background:rgba(59,130,246,0.3);"></div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                    <div class="form-field">
+                      <div class="field-label">Stunden</div>
+                      <div class="field-value"></div>
+                    </div>
+                    <div class="form-field">
+                      <div class="field-label">Überstunden</div>
+                      <div class="field-value"></div>
+                    </div>
+                  </div>
+                  <div class="form-field">
+                    <div class="field-label">Vorlage</div>
+                    <div class="field-value" style="width:80%;"></div>
+                  </div>
+                  <div class="form-field">
+                    <div class="field-label">Empfänger</div>
+                    <div class="field-value"></div>
+                  </div>
+                  <div class="wizard-btn"><span class="wizard-btn-text">Einreichen →</span></div>
+                </div>
+
+                <!-- Screen 3: Kalender -->
+                <div class="app-screen screen-calendar">
+                  <div class="cal-header">
+                    <span class="cal-title">Kalender</span>
+                    <span class="cal-month">April 2026</span>
+                  </div>
+                  <div class="cal-grid">
+                    <div class="cal-day-label">Mo</div><div class="cal-day-label">Di</div><div class="cal-day-label">Mi</div>
+                    <div class="cal-day-label">Do</div><div class="cal-day-label">Fr</div><div class="cal-day-label">Sa</div><div class="cal-day-label">So</div>
+                    <div class="cal-day empty">30</div><div class="cal-day">1</div><div class="cal-day">2</div>
+                    <div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day ev-amber">5</div><div class="cal-day ev-amber">6</div>
+                    <div class="cal-day ev-blue">7</div><div class="cal-day ev-blue">8</div><div class="cal-day ev-blue">9</div>
+                    <div class="cal-day ev-blue">10</div><div class="cal-day ev-blue">11</div><div class="cal-day">12</div><div class="cal-day">13</div>
+                    <div class="cal-day">14</div><div class="cal-day today-d">15</div><div class="cal-day ev-green">16</div>
+                    <div class="cal-day ev-green">17</div><div class="cal-day ev-green">18</div><div class="cal-day">19</div><div class="cal-day">20</div>
+                    <div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div>
+                    <div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div>
+                    <div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div>
+                    <div class="cal-day empty">1</div><div class="cal-day empty">2</div><div class="cal-day empty">3</div><div class="cal-day empty">4</div>
+                  </div>
+                  <div class="cal-legend">
+                    <div class="legend-item"><div class="leg-dot" style="background:#60a5fa;"></div>Genehmigt</div>
+                    <div class="legend-item"><div class="leg-dot" style="background:#f59e0b;"></div>Ausstehend</div>
+                    <div class="legend-item"><div class="leg-dot" style="background:#10b981;"></div>Urlaub</div>
+                  </div>
+                </div>
+
+              </div><!-- /iphone-screen -->
+            </div><!-- /iphone-inner -->
+          </div><!-- /iphone-frame -->
+
+          <!-- Floating notification -->
+          <div class="toast-animate flex items-center gap-3 bg-slate-800/90 backdrop-blur border border-white/10 px-4 py-3 rounded-2xl shadow-2xl text-sm text-white" style="max-width:230px;">
+            <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div>
+              <div class="font-semibold text-xs" data-de="Eintrag genehmigt" data-en="Entry approved">Eintrag genehmigt</div>
+              <div class="text-white/40 text-[10px]" data-de="Kalender wird synchronisiert …" data-en="Calendar is syncing …">Kalender wird synchronisiert …</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TRUST BAR ═════════════════════════════════════════════ -->
+  <section style="background:#0c1120;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);" class="py-8 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-5 mb-5">
+      <p class="text-center text-white/25 text-xs font-semibold uppercase tracking-widest" data-de="Integriert mit führenden Plattformen" data-en="Integrated with leading platforms">Integriert mit führenden Plattformen</p>
+    </div>
+    <div class="relative overflow-hidden">
+      <div class="marquee-track" style="width:max-content;">
+        <!-- Set 1 -->
+        <div class="trust-logo">
+          <svg width="18" height="18" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1h9.5v9.5H1z" fill="#f25022"/><path d="M12.5 1H22v9.5h-9.5z" fill="#7fba00"/><path d="M1 12.5h9.5V22H1z" fill="#00a4ef"/><path d="M12.5 12.5H22V22h-9.5z" fill="#ffb900"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);">Microsoft 365</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.3 29.4 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.9 7.2 29.2 5 24 5 13 5 4 14 4 25s9 20 20 20c11 0 20-9 20-20 0-1.2-.1-2.5-.4-4.5z"/><path fill="#34A853" d="M6.3 15.7l6.6 4.8C14.5 17 19 14 24 14c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.9 7.2 29.2 5 24 5c-7.7 0-14.3 4.5-17.7 10.7z"/><path fill="#FBBC05" d="M24 45c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A12 12 0 0124 36c-5.4 0-9.9-2.7-11.3-6.5l-6.6 4.8C9.7 40.5 16.3 45 24 45z"/><path fill="#EA4335" d="M43.6 20.5H42V20H24v8h11.3C34.9 30.8 33 32.7 30.8 34l6.2 5.2C41 35.5 44 30.7 44 25c0-1.5-.2-2.9-.4-4.5z"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);">Google Workspace</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" viewBox="0 0 109 113" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M63.7 0H44.3l-8 22.6 27.4 0L63.7 0z" fill="#3ECF8E"/><path d="M0 71.2l9.4 26.6 23.3-13.3L0 71.2z" fill="#3ECF8E" opacity=".7"/><path d="M109 71.2l-32.7 13.3 23.3 13.3L109 71.2z" fill="#3ECF8E" opacity=".5"/><ellipse cx="54.1" cy="63.1" rx="28.3" ry="28.3" fill="#3ECF8E"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);">Supabase</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="#10b981"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);" data-de="DSGVO-konform" data-en="GDPR compliant">DSGVO-konform</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);" data-de="Entwickelt in Deutschland" data-en="Made in Germany">Entwickelt in Deutschland</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);">OAuth2 E-Mail</span>
+        </div>
+        <!-- Set 2 (duplicate for seamless loop) -->
+        <div class="trust-logo">
+          <svg width="18" height="18" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1h9.5v9.5H1z" fill="#f25022"/><path d="M12.5 1H22v9.5h-9.5z" fill="#7fba00"/><path d="M1 12.5h9.5V22H1z" fill="#00a4ef"/><path d="M12.5 12.5H22V22h-9.5z" fill="#ffb900"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);">Microsoft 365</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.3 29.4 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.9 7.2 29.2 5 24 5 13 5 4 14 4 25s9 20 20 20c11 0 20-9 20-20 0-1.2-.1-2.5-.4-4.5z"/><path fill="#34A853" d="M6.3 15.7l6.6 4.8C14.5 17 19 14 24 14c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.9 7.2 29.2 5 24 5c-7.7 0-14.3 4.5-17.7 10.7z"/><path fill="#FBBC05" d="M24 45c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A12 12 0 0124 36c-5.4 0-9.9-2.7-11.3-6.5l-6.6 4.8C9.7 40.5 16.3 45 24 45z"/><path fill="#EA4335" d="M43.6 20.5H42V20H24v8h11.3C34.9 30.8 33 32.7 30.8 34l6.2 5.2C41 35.5 44 30.7 44 25c0-1.5-.2-2.9-.4-4.5z"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);">Google Workspace</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" viewBox="0 0 109 113" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M63.7 0H44.3l-8 22.6 27.4 0L63.7 0z" fill="#3ECF8E"/><path d="M0 71.2l9.4 26.6 23.3-13.3L0 71.2z" fill="#3ECF8E" opacity=".7"/><path d="M109 71.2l-32.7 13.3 23.3 13.3L109 71.2z" fill="#3ECF8E" opacity=".5"/><ellipse cx="54.1" cy="63.1" rx="28.3" ry="28.3" fill="#3ECF8E"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);">Supabase</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="#10b981"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);" data-de="DSGVO-konform" data-en="GDPR compliant">DSGVO-konform</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);" data-de="Entwickelt in Deutschland" data-en="Made in Germany">Entwickelt in Deutschland</span>
+        </div>
+        <div class="trust-logo">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span style="font-size:.875rem;font-weight:600;color:rgba(255,255,255,0.65);">OAuth2 E-Mail</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HOW IT WORKS ═════════════════════════════════════════ -->
+  <section id="how" class="py-28" style="background:#f8fafc;">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="text-center mb-16 reveal">
+        <div class="section-chip mb-5" data-de="So funktioniert's" data-en="How it works">So funktioniert's</div>
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900 font-display tracking-tight mb-4" data-de="Drei Schritte. Keine Zettelwirtschaft." data-en="Three steps. No paper chaos.">Drei Schritte. Keine Zettelwirtschaft.</h2>
+        <p class="text-slate-500 text-lg max-w-xl mx-auto" data-de="Von der Zeiterfassung bis zur Genehmigung und Kalender-Sync – vollständig digitalisiert." data-en="From time tracking to approval and calendar sync – fully digitalized.">Von der Zeiterfassung bis zur Genehmigung und Kalender-Sync – vollständig digitalisiert.</p>
+      </div>
+
+      <div class="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-0 justify-center">
+        <!-- Step 1 -->
+        <div class="flex-1 flex flex-col items-center text-center px-6 reveal">
+          <div class="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center mb-5 shadow-lg shadow-blue-200">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-black text-sm flex items-center justify-center mb-3">1</div>
+          <h3 class="font-bold text-slate-900 text-xl mb-2" data-de="Zeiten erfassen &amp; einreichen" data-en="Record &amp; submit time">Zeiten erfassen &amp; einreichen</h3>
+          <p class="text-slate-500 text-sm leading-relaxed" data-de="Arbeitsstunden, Überstunden und Typ in wenigen Schritten erfassen. Vorlage wählen und Monat einreichen – fertig." data-en="Record working hours, overtime and type in a few steps. Choose template and submit the month – done.">Arbeitsstunden, Überstunden und Typ in wenigen Schritten erfassen. Vorlage wählen und Monat auf Knopfdruck einreichen – fertig.</p>
+        </div>
+
+        <div class="step-connector hidden md:block"></div>
+
+        <!-- Step 2 -->
+        <div class="flex-1 flex flex-col items-center text-center px-6 reveal">
+          <div class="w-16 h-16 rounded-2xl bg-sky-600 flex items-center justify-center mb-5 shadow-lg shadow-sky-200">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-sky-100 text-sky-700 font-black text-sm flex items-center justify-center mb-3">2</div>
+          <h3 class="font-bold text-slate-900 text-xl mb-2" data-de="Automatisch benachrichtigen" data-en="Notify automatically">Automatisch benachrichtigen</h3>
+          <p class="text-slate-500 text-sm leading-relaxed" data-de="TRACE versendet den Zeitnachweis direkt per OAuth2 über dein Google- oder Microsoft-Konto – inklusive PDF-Anhang, kein SMTP nötig." data-en="TRACE sends the timesheet directly via OAuth2 through your Google or Microsoft account – including PDF, no SMTP needed.">TRACE versendet den Zeitnachweis direkt per OAuth2 über dein Google- oder Microsoft-Konto – inklusive PDF-Anhang, kein SMTP nötig.</p>
+        </div>
+
+        <div class="step-connector hidden md:block"></div>
+
+        <!-- Step 3 -->
+        <div class="flex-1 flex flex-col items-center text-center px-6 reveal">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-600 flex items-center justify-center mb-5 shadow-lg shadow-emerald-200">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-black text-sm flex items-center justify-center mb-3">3</div>
+          <h3 class="font-bold text-slate-900 text-xl mb-2" data-de="Genehmigen &amp; exportieren" data-en="Approve &amp; export">Genehmigen &amp; exportieren</h3>
+          <p class="text-slate-500 text-sm leading-relaxed" data-de="Nach der Genehmigung wird der Monatseintrag im Kalender synchronisiert. Der Admin kann Zeitnachweise exportieren und archivieren." data-en="After approval, the monthly entry is synced to the calendar. The admin can export and archive timesheets.">Nach der Genehmigung wird der Monatseintrag im Kalender synchronisiert. Der Admin kann Zeitnachweise direkt exportieren und archivieren.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HAUPTFUNKTIONEN (BENTO GRID) ═════════════════════════ -->
+  <section id="features" class="py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="text-center mb-16 reveal">
+        <div class="section-chip mb-5" data-de="Kernfunktionen" data-en="Core features">Kernfunktionen</div>
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900 font-display tracking-tight mb-4" data-de="Was TRACE wirklich kann." data-en="What TRACE really does.">Was TRACE wirklich kann.</h2>
+        <p class="text-slate-500 text-lg max-w-xl mx-auto" data-de="Echte Funktionen aus der App – keine Marketingversprechen." data-en="Real features from the app – no marketing promises.">Echte Funktionen aus der App – keine Marketingversprechen.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- CARD 1: Antragstellung (large, 2-col) -->
+        <div class="bento-card lg:col-span-2 p-8 reveal">
+          <div class="flex flex-col h-full">
+            <div class="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center mb-5 shadow-lg shadow-blue-100">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 mb-2" data-de="Geführte Einreichung" data-en="Guided submission">Geführte Einreichung</h3>
+            <p class="text-slate-500 mb-6" data-de="Der 3-Schritte-Wizard führt durch Vorlagenauswahl, Stundeneingabe und Versand. Felder wie Mitarbeiternummer und Monat werden automatisch befüllt." data-en="The 3-step wizard guides through template selection, hour entry and submission. Fields like employee number and month are auto-filled.">Der 3-Schritte-Wizard führt durch Vorlagenauswahl, Stundeneingabe und Versand. Felder wie Mitarbeiternummer und Monat werden automatisch befüllt – kein Copy-Paste.</p>
+            <!-- Wizard Mockup -->
+            <div class="mt-auto bg-slate-50 rounded-2xl p-5 border border-slate-100">
+              <div class="flex gap-2 mb-4">
+                <div class="flex-1 h-1.5 rounded-full bg-blue-600"></div>
+                <div class="flex-1 h-1.5 rounded-full bg-blue-400"></div>
+                <div class="flex-1 h-1.5 rounded-full bg-slate-200"></div>
+                <div class="flex-1 h-1.5 rounded-full bg-slate-200"></div>
+              </div>
+              <div class="text-xs font-semibold text-blue-600 mb-3" data-de="Schritt 2 von 3 – Stundendaten" data-en="Step 2 of 3 – Hour data">Schritt 2 von 3 – Stundendaten</div>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="bg-white rounded-xl p-3 border border-slate-200">
+                  <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wide mb-1.5" data-de="Personalnummer" data-en="Employee ID">Personalnummer</div>
+                  <div class="text-sm font-bold text-blue-600">EMP-2024-047</div>
+                </div>
+                <div class="bg-white rounded-xl p-3 border border-slate-200">
+                  <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wide mb-1.5" data-de="Belegnummer" data-en="Reference No.">Belegnummer</div>
+                  <div class="text-sm font-bold text-slate-400 italic" data-de="auto-generiert" data-en="auto-generated">auto-generiert</div>
+                </div>
+                <div class="bg-white rounded-xl p-3 border border-slate-200">
+                  <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wide mb-1.5" data-de="Von – Bis" data-en="From – To">Von – Bis</div>
+                  <div class="text-sm font-semibold text-slate-700">07.07. – 18.07.26</div>
+                </div>
+                <div class="bg-white rounded-xl p-3 border border-slate-200">
+                  <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wide mb-1.5" data-de="Urlaubsart" data-en="Leave type">Urlaubsart</div>
+                  <div class="text-sm font-semibold text-slate-700" data-de="Bezahlter Urlaub" data-en="Paid leave">Bezahlter Urlaub</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: E-Mail Versand -->
+        <div class="bento-card p-8 reveal">
+          <div class="w-12 h-12 rounded-2xl bg-sky-600 flex items-center justify-center mb-5 shadow-lg shadow-sky-100">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2" data-de="E-Mail-Versand per OAuth2" data-en="Email dispatch via OAuth2">E-Mail-Versand per OAuth2</h3>
+          <p class="text-slate-500 text-sm mb-5" data-de="TRACE verbindet sich direkt mit deinem Google- oder Microsoft-Konto (echter OAuth2-Flow) und versendet den Zeitnachweis inkl. Export-Anhang als PDF oder DOCX." data-en="TRACE connects directly to your Google or Microsoft account (real OAuth2 flow) and sends the timesheet including PDF or DOCX attachment.">TRACE verbindet sich direkt mit deinem Google- oder Microsoft-Konto und versendet den Zeitnachweis inkl. Export-Anhang als PDF oder DOCX.</p>
+          <!-- OAuth connect UI mockup -->
+          <div class="space-y-2.5 mt-auto">
+            <div class="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-200">
+              <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#4285F4" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.3 29.4 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.9 7.2 29.2 5 24 5 13 5 4 14 4 25s9 20 20 20c11 0 20-9 20-20 0-1.2-.1-2.5-.4-4.5z"/><path fill="#34A853" d="M6.3 15.7l6.6 4.8C14.5 17 19 14 24 14c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.9 7.2 29.2 5 24 5c-7.7 0-14.3 4.5-17.7 10.7z"/><path fill="#FBBC05" d="M24 45c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A12 12 0 0124 36c-5.4 0-9.9-2.7-11.3-6.5l-6.6 4.8C9.7 40.5 16.3 45 24 45z"/><path fill="#EA4335" d="M43.6 20.5H42V20H24v8h11.3C34.9 30.8 33 32.7 30.8 34l6.2 5.2C41 35.5 44 30.7 44 25c0-1.5-.2-2.9-.4-4.5z"/></svg>
+              <span class="text-xs font-semibold text-slate-600">Gmail / Google Workspace</span>
+              <div class="ml-auto flex items-center gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                <span class="text-[10px] font-bold text-emerald-600" data-de="Verbunden" data-en="Connected">Verbunden</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-200">
+              <svg width="16" height="16" viewBox="0 0 23 23" fill="none"><path d="M1 1h9.5v9.5H1z" fill="#f25022"/><path d="M12.5 1H22v9.5h-9.5z" fill="#7fba00"/><path d="M1 12.5h9.5V22H1z" fill="#00a4ef"/><path d="M12.5 12.5H22V22h-9.5z" fill="#ffb900"/></svg>
+              <span class="text-xs font-semibold text-slate-600">Microsoft 365 / Outlook</span>
+              <div class="ml-auto flex items-center gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-slate-300"></div>
+                <span class="text-[10px] font-semibold text-slate-400" data-de="Verbinden" data-en="Connect">Verbinden</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 mt-2 px-1">
+              <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+              <span class="text-[11px] text-slate-400" data-de="Zeitnachweis wird als PDF/DOCX versendet" data-en="Timesheet is sent as PDF/DOCX">Zeitnachweis wird als PDF/DOCX versendet</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: Eigene Vorlagen -->
+        <div class="bento-card p-8 reveal">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500 flex items-center justify-center mb-5 shadow-lg shadow-amber-100">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2" data-de="Export-Vorlagen (DOCX/PDF)" data-en="Export templates (DOCX/PDF)">Export-Vorlagen (DOCX/PDF)</h3>
+          <p class="text-slate-500 text-sm mb-5" data-de="Lade deine DOCX- oder AcroForm-PDF-Vorlagen hoch. TRACE befüllt Felder automatisch: Mitarbeiternummer, Monat, Stunden, Überstunden – stabiler Export ohne Formatverlust." data-en="Upload your DOCX or AcroForm PDF templates. TRACE auto-fills fields: employee number, month, hours, overtime – stable export without formatting loss.">Lade deine DOCX- oder AcroForm-PDF-Vorlagen hoch. TRACE befüllt Felder automatisch: Mitarbeiternummer, Monat, Stunden, Überstunden – stabiler Export ohne Formatverlust.</p>
+          <!-- AcroForm-PDF mockup -->
+          <div class="mt-auto">
+            <div class="flex items-center gap-4 bg-red-50 border-2 border-red-200 rounded-2xl p-4">
+              <div class="w-12 h-14 bg-white border border-red-200 rounded-lg shadow-sm flex flex-col items-center justify-center gap-1">
+                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <span class="text-[8px] font-black text-red-600">PDF</span>
+              </div>
+              <div>
+                <div class="font-bold text-sm text-slate-800" data-de="DOCX &amp; AcroForm-PDF" data-en="DOCX &amp; AcroForm PDF">DOCX &amp; AcroForm-PDF</div>
+                <div class="text-xs text-slate-500 mt-0.5" data-de="Auto-Befüllung · DOCX &amp; PDF Export" data-en="Auto-fill · DOCX &amp; PDF export">Auto-Befüllung · DOCX &amp; PDF Export</div>
+                <div class="flex gap-1 mt-2">
+                  <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700" data-de="Stunden &amp; Monat auto-befüllt" data-en="Hours &amp; month auto-filled">Stunden &amp; Monat auto-befüllt</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: Kalender & Sync (large, 2-col) -->
+        <div class="bento-card lg:col-span-2 p-8 reveal">
+          <div class="flex flex-col md:flex-row gap-8 h-full">
+            <div class="flex-1">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center mb-5 shadow-lg shadow-emerald-100">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 mb-2" data-de="Kalenderintegration &amp; Sync" data-en="Calendar integration &amp; sync">Kalenderintegration &amp; Sync</h3>
+              <p class="text-slate-500 mb-5" data-de="TRACE enthält einen vollständigen Monats-/Wochenkalender für Zeiterfassungen. Bei Genehmigung wird der Monat per OAuth2 in Outlook oder Google Kalender eingetragen – inklusive Benachrichtigung." data-en="TRACE includes a full month/week calendar for time entries. Upon approval, the month is entered via OAuth2 in Outlook or Google Calendar – including notification.">TRACE enthält einen vollständigen Monats-/Wochenkalender für Zeiterfassungen. Bei Genehmigung wird der Monat per OAuth2 in Outlook oder Google Kalender eingetragen – inklusive Benachrichtigung.</p>
+              <div class="flex flex-wrap gap-2">
+                <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-3 py-1.5">
+                  <svg width="14" height="14" viewBox="0 0 23 23" fill="none"><path d="M1 1h9.5v9.5H1z" fill="#f25022"/><path d="M12.5 1H22v9.5h-9.5z" fill="#7fba00"/><path d="M1 12.5h9.5V22H1z" fill="#00a4ef"/><path d="M12.5 12.5H22V22h-9.5z" fill="#ffb900"/></svg>
+                  <span class="text-xs font-semibold text-slate-600">Outlook-Sync</span>
+                </div>
+                <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-3 py-1.5">
+                  <svg width="14" height="14" viewBox="0 0 48 48"><path fill="#4285F4" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.3 29.4 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.9 7.2 29.2 5 24 5 13 5 4 14 4 25s9 20 20 20c11 0 20-9 20-20 0-1.2-.1-2.5-.4-4.5z"/><path fill="#34A853" d="M6.3 15.7l6.6 4.8C14.5 17 19 14 24 14c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.9 7.2 29.2 5 24 5c-7.7 0-14.3 4.5-17.7 10.7z"/><path fill="#FBBC05" d="M24 45c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A12 12 0 0124 36c-5.4 0-9.9-2.7-11.3-6.5l-6.6 4.8C9.7 40.5 16.3 45 24 45z"/><path fill="#EA4335" d="M43.6 20.5H42V20H24v8h11.3C34.9 30.8 33 32.7 30.8 34l6.2 5.2C41 35.5 44 30.7 44 25c0-1.5-.2-2.9-.4-4.5z"/></svg>
+                  <span class="text-xs font-semibold text-slate-600">Google Kalender</span>
+                </div>
+                <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1.5">
+                  <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  <span class="text-xs font-semibold text-emerald-700" data-de="Genehmigungsbenachrichtigung" data-en="Approval notification">Genehmigungsbenachrichtigung</span>
+                </div>
+              </div>
+            </div>
+            <!-- Mini calendar mockup -->
+            <div class="flex-shrink-0 bg-slate-50 rounded-2xl p-4 border border-slate-100 w-full md:w-56">
+              <div class="text-xs font-bold text-slate-700 mb-3 text-center">April 2026</div>
+              <div class="grid grid-cols-7 gap-1">
+                <div class="text-center text-[9px] text-slate-400 font-semibold">Mo</div><div class="text-center text-[9px] text-slate-400 font-semibold">Di</div><div class="text-center text-[9px] text-slate-400 font-semibold">Mi</div><div class="text-center text-[9px] text-slate-400 font-semibold">Do</div><div class="text-center text-[9px] text-slate-400 font-semibold">Fr</div><div class="text-center text-[9px] text-slate-400 font-semibold">Sa</div><div class="text-center text-[9px] text-slate-400 font-semibold">So</div>
+                <div class="text-center text-[9px] text-slate-300 py-1">31</div>
+                <div class="text-center text-[9px] text-slate-600 py-1">1</div><div class="text-center text-[9px] text-slate-600 py-1">2</div><div class="text-center text-[9px] text-slate-600 py-1">3</div><div class="text-center text-[9px] text-slate-600 py-1">4</div>
+                <div class="text-center text-[9px] bg-amber-100 text-amber-700 font-bold py-1 rounded">5</div><div class="text-center text-[9px] bg-amber-100 text-amber-700 font-bold py-1 rounded">6</div>
+                <div class="text-center text-[9px] bg-blue-100 text-blue-700 font-bold py-1 rounded">7</div><div class="text-center text-[9px] bg-blue-100 text-blue-700 font-bold py-1 rounded">8</div><div class="text-center text-[9px] bg-blue-100 text-blue-700 font-bold py-1 rounded">9</div><div class="text-center text-[9px] bg-blue-100 text-blue-700 font-bold py-1 rounded">10</div><div class="text-center text-[9px] bg-blue-100 text-blue-700 font-bold py-1 rounded">11</div>
+                <div class="text-center text-[9px] text-slate-300 py-1">12</div><div class="text-center text-[9px] text-slate-300 py-1">13</div>
+                <div class="text-center text-[9px] text-slate-600 py-1">14</div><div class="text-center text-[9px] bg-blue-600 text-white font-bold py-1 rounded-full">15</div><div class="text-center text-[9px] bg-emerald-100 text-emerald-700 font-bold py-1 rounded">16</div><div class="text-center text-[9px] bg-emerald-100 text-emerald-700 font-bold py-1 rounded">17</div><div class="text-center text-[9px] bg-emerald-100 text-emerald-700 font-bold py-1 rounded">18</div>
+                <div class="text-center text-[9px] text-slate-300 py-1">19</div><div class="text-center text-[9px] text-slate-300 py-1">20</div>
+              </div>
+              <div class="flex gap-2 mt-3 flex-wrap">
+                <div class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-blue-400"></div><span class="text-[9px] text-slate-500">Genehmigt</span></div>
+                <div class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-amber-400"></div><span class="text-[9px] text-slate-500">Eingereicht</span></div>
+                <div class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-emerald-400"></div><span class="text-[9px] text-slate-500">Erfasst</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ APP SHOWCASE ══════════════════════════════════════════ -->
+  <section id="showcase" style="background:#0b1220;" class="py-28 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="text-center mb-12 reveal">
+        <div class="section-chip section-chip-dark mb-5" data-de="Live App-Ansicht" data-en="Live app view">Live App-Ansicht</div>
+        <h2 class="text-4xl md:text-5xl font-black text-white font-display tracking-tight mb-4" data-de="Die echte Oberfläche." data-en="The real interface.">Die echte Oberfläche.</h2>
+        <p class="text-white/45 text-lg max-w-xl mx-auto" data-de="Keine Marketing-Mockups – echte UI-Elemente aus der TRACE-Anwendung." data-en="No marketing mockups – real UI elements from the TRACE application.">Keine Marketing-Mockups – echte UI-Elemente aus der TRACE-Anwendung.</p>
+      </div>
+
+      <!-- Tab buttons -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-6 justify-center reveal">
+        <button class="tab-btn active" data-tab="dashboard" data-de="Dashboard" data-en="Dashboard">Dashboard</button>
+        <button class="tab-btn" data-tab="requests" data-de="Meine Zeiten" data-en="My Times">Meine Zeiten</button>
+        <button class="tab-btn" data-tab="calendar" data-de="Kalender" data-en="Calendar">Kalender</button>
+        <button class="tab-btn" data-tab="admin" data-de="Admin-Panel" data-en="Admin Panel">Admin-Panel</button>
+      </div>
+
+      <div class="reveal">
+        <!-- TAB: Dashboard -->
+        <div id="tab-dashboard" class="tab-panel active">
+          <div class="app-window">
+            <div class="app-window-bar">
+              <div class="win-dot win-dot-red"></div>
+              <div class="win-dot win-dot-yellow"></div>
+              <div class="win-dot win-dot-green"></div>
+              <div class="win-url">app.trace.wamocon.de/dashboard</div>
+            </div>
+            <div class="app-window-body">
+              <div class="app-sidebar">
+                <div class="sidebar-logo-row">
+                  <div class="sidebar-logo-icon">
+                    <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg>
+                  </div>
+                  <span class="sidebar-logo-text">TRACE</span>
+                </div>
+                <div class="sidebar-nav-item active"><div class="nav-dot active"></div>Dashboard</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Kalender</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Meine Anträge</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Organisationen</div>
+                <div style="margin-top:auto; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
+                  <div class="sidebar-nav-item" style="font-size:10px;opacity:.6;"><div class="nav-dot"></div>Admin-Panel</div>
+                  <div class="sidebar-nav-item" style="font-size:10px;opacity:.6;"><div class="nav-dot"></div>Berichte</div>
+                  <div class="sidebar-nav-item" style="font-size:10px;opacity:.6;"><div class="nav-dot"></div>Einstellungen</div>
+                </div>
+              </div>
+              <div class="app-content">
+                <div class="content-title" data-de="Guten Morgen, Max 👋" data-en="Good morning, Max 👋">Guten Morgen, Max 👋</div>
+                <div class="grid grid-cols-3 gap-3 mb-4">
+                  <div class="glass-card-dark rounded-xl p-3">
+                    <div style="font-size:9px;color:rgba(255,255,255,0.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;" data-de="Ausstehend" data-en="Pending">Ausstehend</div>
+                    <div style="font-size:22px;font-weight:800;color:#f59e0b;font-family:'Outfit',sans-serif;">3</div>
+                  </div>
+                  <div class="glass-card-dark rounded-xl p-3">
+                    <div style="font-size:9px;color:rgba(255,255,255,0.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;" data-de="Genehmigt" data-en="Approved">Genehmigt</div>
+                    <div style="font-size:22px;font-weight:800;color:#10b981;font-family:'Outfit',sans-serif;">18</div>
+                  </div>
+                  <div class="glass-card-dark rounded-xl p-3">
+                    <div style="font-size:9px;color:rgba(255,255,255,0.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;" data-de="Resturlaub" data-en="Remaining">Resturlaub</div>
+                    <div style="font-size:22px;font-weight:800;color:#60a5fa;font-family:'Outfit',sans-serif;">12</div>
+                  </div>
+                </div>
+                <div style="font-size:11px;font-weight:700;color:#fff;margin-bottom:8px;" data-de="Letzte Einreichungen" data-en="Recent submissions">Letzte Einreichungen</div>
+                <div class="space-y-2">
+                  <div class="glass-card-dark rounded-xl p-2.5 flex items-center gap-3">
+                    <div style="width:28px;height:28px;border-radius:50%;background:rgba(59,130,246,0.3);flex-shrink:0;"></div>
+                    <div style="flex:1;">
+                      <div style="font-size:11px;font-weight:600;color:#fff;">Max Müller</div>
+                      <div style="font-size:9px;color:rgba(255,255,255,0.35);">März 2026 · 168 Std.</div>
+                    </div>
+                    <span class="status-badge badge-approved">Genehmigt</span>
+                  </div>
+                  <div class="glass-card-dark rounded-xl p-2.5 flex items-center gap-3">
+                    <div style="width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,0.3);flex-shrink:0;"></div>
+                    <div style="flex:1;">
+                      <div style="font-size:11px;font-weight:600;color:#fff;">Anna Schmidt</div>
+                      <div style="font-size:9px;color:rgba(255,255,255,0.35);">Feb. 2026 · 152 Std.</div>
+                    </div>
+                    <span class="status-badge badge-pending">Ausstehend</span>
+                  </div>
+                  <div class="glass-card-dark rounded-xl p-2.5 flex items-center gap-3">
+                    <div style="width:28px;height:28px;border-radius:50%;background:rgba(239,68,68,0.2);flex-shrink:0;"></div>
+                    <div style="flex:1;">
+                      <div style="font-size:11px;font-weight:600;color:#fff;">Lars Becker</div>
+                      <div style="font-size:9px;color:rgba(255,255,255,0.35);">Jan. 2026 · 160 Std.</div>
+                    </div>
+                    <span class="status-badge badge-rejected">Abgelehnt</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: Meine Anträge -->
+        <div id="tab-requests" class="tab-panel">
+          <div class="app-window">
+            <div class="app-window-bar">
+              <div class="win-dot win-dot-red"></div><div class="win-dot win-dot-yellow"></div><div class="win-dot win-dot-green"></div>
+              <div class="win-url">app.trace.wamocon.de/dashboard/requests</div>
+            </div>
+            <div class="app-window-body">
+              <div class="app-sidebar">
+                <div class="sidebar-logo-row">
+                  <div class="sidebar-logo-icon"><svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg></div>
+                  <span class="sidebar-logo-text">TRACE</span>
+                </div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Dashboard</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Kalender</div>
+                <div class="sidebar-nav-item active"><div class="nav-dot active"></div>Meine Anträge</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Organisationen</div>
+              </div>
+              <div class="app-content">
+                <div class="content-title" data-de="Meine Zeiten" data-en="My Times">Meine Zeiten</div>
+                <!-- Filter tabs -->
+                <div class="flex gap-2 mb-4">
+                  <div style="padding:4px 10px;border-radius:20px;background:#3b82f6;color:#fff;font-size:10px;font-weight:700;" data-de="Alle" data-en="All">Alle</div>
+                  <div style="padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);font-size:10px;font-weight:600;" data-de="Eingereicht" data-en="Submitted">Eingereicht</div>
+                  <div style="padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);font-size:10px;font-weight:600;" data-de="Genehmigt" data-en="Approved">Genehmigt</div>
+                  <div style="padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);font-size:10px;font-weight:600;" data-de="Abgelehnt" data-en="Rejected">Abgelehnt</div>
+                </div>
+                <div class="space-y-2">
+                  <div class="glass-card-dark rounded-xl p-3 flex items-center gap-3">
+                    <div style="flex:1;"><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:2px;">März 2026</div><div style="font-size:9px;color:rgba(255,255,255,0.35);">168 Std. · Projektarbeit</div></div>
+                    <span class="status-badge badge-approved">✓ Genehmigt</span>
+                  </div>
+                  <div class="glass-card-dark rounded-xl p-3 flex items-center gap-3">
+                    <div style="flex:1;"><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:2px;">Feb. 2026</div><div style="font-size:9px;color:rgba(255,255,255,0.35);">152 Std. · Projektarbeit</div></div>
+                    <span class="status-badge badge-pending">⏳ Ausstehend</span>
+                  </div>
+                  <div class="glass-card-dark rounded-xl p-3 flex items-center gap-3">
+                    <div style="flex:1;"><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:2px;">Jan. 2026</div><div style="font-size:9px;color:rgba(255,255,255,0.35);">160 Std. · Projektarbeit</div></div>
+                    <span class="status-badge badge-rejected">✗ Abgelehnt</span>
+                  </div>
+                  <div class="glass-card-dark rounded-xl p-3 flex items-center gap-3">
+                    <div style="flex:1;"><div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:2px;">Dez. 2025</div><div style="font-size:9px;color:rgba(255,255,255,0.35);">175 Std. · Projektarbeit</div></div>
+                    <span class="status-badge badge-approved">✓ Genehmigt</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: Kalender -->
+        <div id="tab-calendar" class="tab-panel">
+          <div class="app-window">
+            <div class="app-window-bar">
+              <div class="win-dot win-dot-red"></div><div class="win-dot win-dot-yellow"></div><div class="win-dot win-dot-green"></div>
+              <div class="win-url">app.trace.wamocon.de/dashboard/calendar</div>
+            </div>
+            <div class="app-window-body">
+              <div class="app-sidebar">
+                <div class="sidebar-logo-row">
+                  <div class="sidebar-logo-icon"><svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg></div>
+                  <span class="sidebar-logo-text">TRACE</span>
+                </div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Dashboard</div>
+                <div class="sidebar-nav-item active"><div class="nav-dot active"></div>Kalender</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Meine Anträge</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Organisationen</div>
+              </div>
+              <div class="app-content">
+                <div class="flex items-center justify-between mb-3">
+                  <div class="content-title mb-0" data-de="Juli 2026" data-en="July 2026">Juli 2026</div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <div class="flex items-center gap-1.5 text-[10px] text-white/50"><div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>Genehmigt</div>
+                    <div class="flex items-center gap-1.5 text-[10px] text-white/50"><div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>Eingereicht</div>
+                  </div>
+                </div>
+                <div class="grid grid-cols-7 gap-1">
+                  <div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;padding-bottom:4px;">Mo</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;padding-bottom:4px;">Di</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;padding-bottom:4px;">Mi</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;padding-bottom:4px;">Do</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;padding-bottom:4px;">Fr</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;padding-bottom:4px;">Sa</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;padding-bottom:4px;">So</div>
+                  <div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.4);padding:4px 2px;">1</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.4);padding:4px 2px;">2</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.4);padding:4px 2px;">3</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.4);padding:4px 2px;">4</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.4);padding:4px 2px;">5</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);padding:4px 2px;">6</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);padding:4px 2px;">7</div>
+                  <div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">7</div><div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">8</div><div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">9</div><div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">10</div><div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">11</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);padding:4px 2px;">12</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);padding:4px 2px;">13</div>
+                  <div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">14</div><div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">15</div><div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">16</div><div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">17</div><div style="text-align:center;font-size:9px;background:rgba(59,130,246,0.25);color:#60a5fa;font-weight:700;border-radius:5px;padding:4px 2px;">18</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);padding:4px 2px;">19</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);padding:4px 2px;">20</div>
+                  <div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.4);padding:4px 2px;">21</div><div style="text-align:center;font-size:9px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;border-radius:5px;padding:4px 2px;">22</div><div style="text-align:center;font-size:9px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;border-radius:5px;padding:4px 2px;">23</div><div style="text-align:center;font-size:9px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;border-radius:5px;padding:4px 2px;">24</div><div style="text-align:center;font-size:9px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;border-radius:5px;padding:4px 2px;">25</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);padding:4px 2px;">26</div><div style="text-align:center;font-size:9px;color:rgba(255,255,255,0.2);padding:4px 2px;">27</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: Admin -->
+        <div id="tab-admin" class="tab-panel">
+          <div class="app-window">
+            <div class="app-window-bar">
+              <div class="win-dot win-dot-red"></div><div class="win-dot win-dot-yellow"></div><div class="win-dot win-dot-green"></div>
+              <div class="win-url">app.trace.wamocon.de/dashboard/admin</div>
+            </div>
+            <div class="app-window-body">
+              <div class="app-sidebar">
+                <div class="sidebar-logo-row">
+                  <div class="sidebar-logo-icon"><svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg></div>
+                  <span class="sidebar-logo-text">TRACE</span>
+                </div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Dashboard</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Kalender</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Meine Anträge</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Organisationen</div>
+                <div class="sidebar-nav-item active" style="color:#f59e0b;background:rgba(245,158,11,0.1);"><div class="nav-dot" style="background:#f59e0b;"></div>Admin-Panel</div>
+                <div class="sidebar-nav-item"><div class="nav-dot"></div>Berichte</div>
+              </div>
+              <div class="app-content">
+                <div class="content-title" data-de="Admin-Panel" data-en="Admin Panel">Admin-Panel</div>
+                <div class="flex items-center gap-2 mb-3 flex-wrap">
+                  <div style="padding:3px 10px;border-radius:20px;background:rgba(245,158,11,0.15);color:#f59e0b;font-size:9px;font-weight:700;border:1px solid rgba(245,158,11,0.2);" data-de="3 ausstehende Einreichungen" data-en="3 pending submissions">3 ausstehende Einreichungen</div>
+                  <div style="padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);font-size:9px;font-weight:600;" data-de="Vorlage hochladen" data-en="Upload template">+ Vorlage hochladen</div>
+                </div>
+                <!-- User table -->
+                <div style="font-size:9px;color:rgba(255,255,255,0.3);font-weight:600;display:grid;grid-template-columns:1fr 1fr auto;gap:8px;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em;">
+                  <div data-de="Mitarbeiter" data-en="Employee">Mitarbeiter</div><div data-de="Einreichung" data-en="Submission">Einreichung</div><div data-de="Rolle" data-en="Role">Rolle</div>
+                </div>
+                <div class="space-y-1.5">
+                  <div class="glass-card-dark rounded-lg p-2 flex items-center gap-3" style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;">
+                    <div style="font-size:11px;color:#fff;font-weight:600;">Max Müller</div>
+                    <span class="status-badge badge-pending" style="font-size:8px;">Eingereicht</span>
+                    <span style="font-size:8px;padding:1px 7px;border-radius:8px;background:rgba(245,158,11,0.15);color:#f59e0b;font-weight:700;">Admin</span>
+                  </div>
+                  <div class="glass-card-dark rounded-lg p-2" style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;">
+                    <div style="font-size:11px;color:#fff;font-weight:600;">Anna Schmidt</div>
+                    <span class="status-badge badge-approved" style="font-size:8px;">Genehmigt</span>
+                    <span style="font-size:8px;padding:1px 7px;border-radius:8px;background:rgba(59,130,246,0.15);color:#60a5fa;font-weight:700;">User</span>
+                  </div>
+                  <div class="glass-card-dark rounded-lg p-2" style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center;">
+                    <div style="font-size:11px;color:#fff;font-weight:600;">Lars Becker</div>
+                    <span class="status-badge badge-pending" style="font-size:8px;">Eingereicht</span>
+                    <span style="font-size:8px;padding:1px 7px;border-radius:8px;background:rgba(59,130,246,0.15);color:#60a5fa;font-weight:700;">User</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ZUSATZFUNKTIONEN ═══════════════════════════════════════ -->
+  <section id="extras" class="py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="text-center mb-14 reveal">
+        <div class="section-chip mb-5" data-de="Weitere Funktionen" data-en="More features">Weitere Funktionen</div>
+        <h2 class="text-4xl font-black text-slate-900 font-display tracking-tight mb-4" data-de="Alles, was ein Team braucht." data-en="Everything a team needs.">Alles, was ein Team braucht.</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="glass-card rounded-2xl p-6 reveal">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4"><svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div>
+          <h3 class="font-bold text-slate-900 mb-2" data-de="Organisationsverwaltung" data-en="Organisation management">Organisationsverwaltung</h3>
+          <p class="text-slate-500 text-sm" data-de="Mehrere Abteilungen oder Firmen unter einem Account. Nutzer können zwischen ihren Organisationen wechseln." data-en="Multiple departments or companies under one account. Users can switch between their organisations.">Mehrere Abteilungen oder Firmen unter einem Account. Nutzer können zwischen Organisationen wechseln.</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 reveal">
+          <div class="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center mb-4"><svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+          <h3 class="font-bold text-slate-900 mb-2" data-de="Benutzerverwaltung" data-en="User management">Benutzerverwaltung</h3>
+          <p class="text-slate-500 text-sm" data-de="Rollen Admin und User, Einladungssystem, Berechtigungssteuerung – alles im Admin-Panel." data-en="Roles Admin and User, invitation system, permission control – all in the admin panel.">Rollen Admin und User, Einladungssystem, Berechtigungssteuerung – alles im Admin-Panel.</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 reveal">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mb-4"><svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+          <h3 class="font-bold text-slate-900 mb-2" data-de="Nutzer-Einstellungen" data-en="User settings">Nutzer-Einstellungen</h3>
+          <p class="text-slate-500 text-sm" data-de="Name, Personalnummer, E-Mail und bevorzugter Kalender-Provider können dauerhaft hinterlegt werden – Anträge werden automatisch vorausgefüllt." data-en="Name, employee ID, email and preferred calendar provider can be stored permanently – requests are auto pre-filled.">Name, Mitarbeiternummer und bevorzugter Kalender-Provider hinterlegbar. Zeiterfassungen werden automatisch vorausgefüllt.</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 reveal">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center mb-4"><svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+          <h3 class="font-bold text-slate-900 mb-2" data-de="Berichte (Admin)" data-en="Reports (Admin)">Berichte (Admin)</h3>
+          <p class="text-slate-500 text-sm" data-de="Admins sehen Auslastungsübersichten, Urlaubsstatus pro Mitarbeiter und Kontingentauswertungen." data-en="Admins see capacity overviews, leave status per employee and quota evaluations.">Admins sehen Auslastungsübersichten, Erfassungsstatus pro Mitarbeiter und Stundenauswertungen.</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 reveal">
+          <div class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center mb-4"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+          <h3 class="font-bold text-slate-900 mb-2" data-de="DSGVO &amp; Sicherheit" data-en="GDPR &amp; Security">DSGVO &amp; Sicherheit</h3>
+          <p class="text-slate-500 text-sm" data-de="Authentifizierung via Supabase, rollenbasierter Zugriff (RLS), Datenspeicherung ausschließlich in der EU." data-en="Authentication via Supabase, role-based access control (RLS), data storage exclusively in the EU.">Authentifizierung via Supabase, rollenbasierter Zugriff (RLS), EU-Datenspeicherung.</p>
+        </div>
+        <div class="glass-card rounded-2xl p-6 reveal">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4"><svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm0 8a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zm12 0a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg></div>
+          <h3 class="font-bold text-slate-900 mb-2" data-de="TeamRadar-Integration" data-en="TeamRadar integration">TeamRadar-Integration</h3>
+          <p class="text-slate-500 text-sm" data-de="TRACE ist als Micro-Frontend in TeamRadar eingebettet – direkter Absprung oder InApp-Nutzung über das App-Portal." data-en="TRACE is embedded as a micro-frontend in TeamRadar – direct jump-out or in-app use via the app portal.">TRACE ist als Micro-Frontend in TeamRadar eingebettet – InApp-Nutzung oder direkter Absprung möglich.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ROI RECHNER ═══════════════════════════════════════════ -->
+  <section id="roi" style="background:#0b1220;" class="py-28 relative overflow-hidden">
+    <div class="orb w-96 h-96 bg-blue-700/20 top-0 right-0"></div>
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="text-center mb-16 reveal">
+        <div class="section-chip section-chip-dark mb-5" data-de="ROI Rechner" data-en="ROI Calculator">ROI Rechner</div>
+        <h2 class="text-4xl md:text-5xl font-black text-white font-display tracking-tight mb-4" data-de="Wie viel Zeit verliert ihr durch manuelle Zeiterfassung?" data-en="How much time do you lose with manual time tracking?">Wie viel Zeit verliert ihr durch manuelle Zeiterfassung?</h2>
+        <p class="text-white/45 text-lg max-w-xl mx-auto" data-de="Berechnet die mögliche Ersparnis durch TRACE – transparent, ohne erfundene Zahlen." data-en="Calculate your potential savings with TRACE – transparent, no made-up numbers.">Berechnet die mögliche Ersparnis durch TRACE – transparent, ohne erfundene Zahlen.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <!-- Sliders -->
+        <div class="reveal">
+          <div class="space-y-10">
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <label class="text-sm font-bold uppercase tracking-widest text-blue-400" data-de="Anzahl Mitarbeiter" data-en="Number of employees">Anzahl Mitarbeiter</label>
+                <span id="employee-count-label" class="text-2xl font-black text-white font-display">50</span>
+              </div>
+              <input type="range" id="employee-slider" min="10" max="500" value="50">
+            </div>
+            <div>
+              <div class="flex justify-between items-center mb-3">
+                <label class="text-sm font-bold uppercase tracking-widest text-blue-400" data-de="Monatliche Erfassungen / Mitarbeiter / Jahr (Ø)" data-en="Monthly submissions / employee / year (avg)">Monatliche Erfassungen / Mitarbeiter / Jahr (Ø)</label>
+                <span id="request-count-label" class="text-2xl font-black text-white font-display">5</span>
+              </div>
+              <input type="range" id="request-slider" min="1" max="15" value="5">
+            </div>
+          </div>
+          <!-- Disclaimer -->
+          <div class="mt-8 flex gap-3 p-4 rounded-2xl bg-white/4 border border-white/8">
+            <svg class="w-5 h-5 text-blue-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <p class="text-white/35 text-xs leading-relaxed" data-de="Schätzung: Basis ist ein durchschnittlicher manueller Verwaltungsaufwand von ~20 Min. pro Antrag (Antrag erstellen, E-Mail versenden, Kalender manuell pflegen) und ein interner Stundensatz von 50 €/h. Eigene Werte können abweichen." data-en="Estimate: Based on an average manual effort of ~20 min. per request (creating request, sending email, manually updating calendar) and an internal hourly rate of €50/h. Your actual values may differ.">Schätzung: Basis ist ein durchschnittlicher manueller Aufwand von ~25 Min. pro monatlicher Zeiterfassung (Tabelle ausfüllen, E-Mail, Rückfragen) und ein interner Stundensatz von 50 €/h. Eigene Werte können abweichen.</p>
+          </div>
+        </div>
+        <!-- Result -->
+        <div class="relative reveal">
+          <div class="absolute inset-0 bg-blue-600/15 blur-3xl rounded-full"></div>
+          <div class="glass-card-dark border border-white/10 p-10 rounded-3xl text-center relative">
+            <div class="text-blue-400 text-xs font-bold uppercase tracking-widest mb-4" data-de="Geschätzte jährliche Zeitersparnis" data-en="Estimated annual time saving">Geschätzte jährliche Zeitersparnis</div>
+            <div id="savings-value" class="text-6xl font-black text-white mb-3 font-display transition-transform">2.125 €</div>
+            <div class="text-white/40 mb-8 text-sm">≈ <span id="hours-value" class="text-white font-bold">43 Std.</span> <span data-de="weniger manuelle Arbeit pro Jahr" data-en="less manual work per year">weniger manuelle Arbeit pro Jahr</span></div>
+            <a href="#pricing" class="block w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-blue-900/40" data-de="Jetzt Zeit sparen" data-en="Save time now">Jetzt Zeit sparen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PRICING ════════════════════════════════════════════════ -->
+  <section id="pricing" class="py-28 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="text-center mb-16 reveal">
+        <div class="section-chip mb-5" data-de="Preise" data-en="Pricing">Preise</div>
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900 font-display tracking-tight mb-4" data-de="Einfach. Transparent. Skalierbar." data-en="Simple. Transparent. Scalable.">Einfach. Transparent. Skalierbar.</h2>
+        <p class="text-slate-500 text-lg max-w-xl mx-auto" data-de="Keine versteckten Kosten. Jederzeit kündbar." data-en="No hidden costs. Cancel at any time.">Keine versteckten Kosten. Jederzeit kündbar.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+        <!-- Lite -->
+        <div class="pricing-card reveal">
+          <div class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3" data-de="LITE" data-en="LITE">LITE</div>
+          <div class="flex items-end gap-1 mb-1">
+            <div class="text-4xl font-black text-slate-900 font-display">5,90 €</div>
+            <div class="text-slate-400 text-sm mb-1.5" data-de="/ Nutzer / Monat" data-en="/ user / month">/ Nutzer / Monat</div>
+          </div>
+          <div class="text-slate-400 text-sm mb-6" data-de="Bis 25 Nutzer · 1 Organisation" data-en="Up to 25 users · 1 organisation">Bis 25 Nutzer · 1 Organisation</div>
+          <a href="https://app.trace.wamocon.de/" target="_blank" rel="noopener" class="block w-full text-center border border-slate-200 hover:border-blue-400 text-slate-700 hover:text-blue-600 py-3 rounded-xl font-semibold text-sm transition-all mb-6" data-de="Lite testen" data-en="Try Lite">Lite testen</a>
+          <div class="space-y-1">
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Bis 25 Nutzer" data-en="Up to 25 users">Bis 25 Nutzer</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="1 Organisation" data-en="1 organisation">1 Organisation</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Integrierter Kalender" data-en="Embedded calendar">Integrierter Kalender</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Zeiterfassung (Wizard)" data-en="Time entry (Wizard)">Zeiterfassung (Wizard)</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Standard-Support" data-en="Standard support">Standard-Support</span></div>
+            <div class="pf-row"><svg class="cross-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span class="text-slate-400" data-de="Export-Vorlagen (DOCX/PDF)" data-en="Export templates (DOCX/PDF)">Export-Vorlagen (DOCX/PDF)</span></div>
+            <div class="pf-row"><svg class="cross-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span class="text-slate-400" data-de="OAuth2 E-Mail-Versand" data-en="OAuth2 email dispatch">OAuth2 E-Mail-Versand</span></div>
+            <div class="pf-row"><svg class="cross-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span class="text-slate-400" data-de="Kalender-Sync (Outlook/Google)" data-en="Calendar sync (Outlook/Google)">Kalender-Sync (Outlook/Google)</span></div>
+            <div class="pf-row"><svg class="cross-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg><span class="text-slate-400" data-de="Admin-Panel &amp; Genehmigungen" data-en="Admin panel &amp; approvals">Admin-Panel &amp; Genehmigungen</span></div>
+          </div>
+        </div>
+
+        <!-- Pro (featured) -->
+        <div class="pricing-card featured reveal">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg" data-de="Empfohlen" data-en="Recommended">Empfohlen</div>
+          <div class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3">PRO</div>
+          <div class="flex items-end gap-1 mb-1">
+            <div class="text-4xl font-black text-slate-900 font-display">11,90 €</div>
+            <div class="text-slate-400 text-sm mb-1.5" data-de="/ Nutzer / Monat" data-en="/ user / month">/ Nutzer / Monat</div>
+          </div>
+          <div class="text-slate-400 text-sm mb-6" data-de="Unbegrenzte Nutzer &amp; Organisationen" data-en="Unlimited users &amp; organisations">Unbegrenzte Nutzer &amp; Organisationen</div>
+          <a href="https://app.trace.wamocon.de/" target="_blank" rel="noopener" class="block w-full text-center bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-semibold text-sm transition-all mb-6 shadow-lg shadow-blue-100" data-de="Pro testen" data-en="Try Pro">Pro testen</a>
+          <div class="space-y-1">
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Alles aus Lite" data-en="Everything in Lite">Alles aus Lite</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Unbegrenzte Nutzer" data-en="Unlimited users">Unbegrenzte Nutzer</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Unbegrenzte Organisationen" data-en="Unlimited organisations">Unbegrenzte Organisationen</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Export-Vorlagen (DOCX/PDF)" data-en="Export templates (DOCX/PDF)">Export-Vorlagen (DOCX/PDF)</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="OAuth2 E-Mail (Google &amp; Microsoft)" data-en="OAuth2 email (Google &amp; Microsoft)">OAuth2 E-Mail (Google &amp; Microsoft)</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Kalender-Sync + Team-Einladung" data-en="Calendar sync + team invitation">Kalender-Sync + Team-Einladung</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Admin-Panel, Genehmigungen &amp; Berichte" data-en="Admin panel, approvals &amp; reports">Admin-Panel, Genehmigungen &amp; Berichte</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Stundenauswertungen &amp; Export" data-en="Hour reports &amp; export">Stundenauswertungen &amp; Export</span></div>
+            <div class="pf-row"><svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span data-de="Prioritäts-Support" data-en="Priority support">Prioritäts-Support</span></div>
+          </div>
+        </div>
+
+        <!-- Innovation Package -->
+        <div class="innovation-card reveal">
+          <div class="relative z-10">
+            <div class="text-xs font-bold uppercase tracking-widest text-blue-400 mb-3">INNOVATION PACKAGE</div>
+            <div class="text-3xl font-black text-white font-display mb-1" data-de="Auf Anfrage" data-en="On request">Auf Anfrage</div>
+            <div class="text-white/40 text-sm mb-6" data-de="TRACE + AWAY + TeamRadar im Bundle" data-en="TRACE + AWAY + TeamRadar bundle">TRACE + AWAY + TeamRadar im Bundle</div>
+            <a href="#" onclick="openContactModal();return false;" class="block w-full text-center border border-blue-500/50 hover:border-blue-400 text-blue-300 hover:text-white py-3 rounded-xl font-semibold text-sm transition-all mb-6" data-de="Beratung anfragen" data-en="Request consultation">Beratung anfragen</a>
+            <div class="space-y-1">
+              <div class="pf-row" style="border-color:rgba(255,255,255,0.05);color:rgba(255,255,255,0.65);">
+                <svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                <span data-de="Alles aus Pro" data-en="Everything in Pro">Alles aus Pro</span>
+              </div>
+              <div class="pf-row" style="border-color:rgba(255,255,255,0.05);color:rgba(255,255,255,0.65);">
+                <svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                <span><strong class="text-white">AWAY</strong> <span data-de="– Urlaubsplaner" data-en="– Leave planner">– Urlaubsplaner</span></span>
+              </div>
+              <div class="pf-row" style="border-color:rgba(255,255,255,0.05);color:rgba(255,255,255,0.65);">
+                <svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                <span><strong class="text-white">TRACE</strong> <span data-de="– Zeiterfassung (intern &amp; extern)" data-en="– Time tracking (internal &amp; external)">– Zeiterfassung (intern &amp; extern)</span></span>
+              </div>
+              <div class="pf-row" style="border-color:rgba(255,255,255,0.05);color:rgba(255,255,255,0.65);">
+                <svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                <span><strong class="text-white">TeamRadar</strong> <span data-de="– Verwaltung" data-en="– Management">– Verwaltung</span></span>
+              </div>
+              <div class="pf-row" style="border-color:rgba(255,255,255,0.05);color:rgba(255,255,255,0.65);">
+                <svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                <span data-de="Zentrales App-Portal (InApp oder Direktlink)" data-en="Central app portal (in-app or direct link)">Zentrales App-Portal (InApp oder Direktlink)</span>
+              </div>
+              <div class="pf-row" style="border-color:rgba(255,255,255,0.05);color:rgba(255,255,255,0.65);">
+                <svg class="check-ico w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                <span data-de="Dediziertes Onboarding" data-en="Dedicated onboarding">Dediziertes Onboarding</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ════════════════════════════════════════════════════ -->
+  <section id="faq" class="py-28 bg-white">
+    <div class="max-w-3xl mx-auto px-5">
+      <div class="text-center mb-12 reveal">
+        <div class="section-chip mb-5" data-de="FAQ" data-en="FAQ">FAQ</div>
+        <h2 class="text-4xl font-black text-slate-900 font-display tracking-tight" data-de="Häufige Fragen." data-en="Frequently asked questions.">Häufige Fragen.</h2>
+      </div>
+      <div class="space-y-3 reveal">
+
+        <div class="faq-item">
+          <button class="faq-question" data-de="Wo werden meine Daten gespeichert?" data-en="Where is my data stored?">Wo werden meine Daten gespeichert?
+            <svg class="faq-chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-answer" data-de="TRACE nutzt Supabase als Backend (Auth &amp; Datenbank). Die Datenspeicherung erfolgt ausschließlich auf EU-Servern. Die App ist vollständig DSGVO-konform entwickelt." data-en="TRACE uses Supabase as backend (auth &amp; database). Data is stored exclusively on EU servers. The app is fully GDPR-compliant.">TRACE nutzt Supabase als Backend (Auth &amp; Datenbank). Die Datenspeicherung erfolgt ausschließlich auf EU-Servern. Die App ist vollständig DSGVO-konform entwickelt.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" data-de="Wie verbinde ich Outlook oder Google Kalender?" data-en="How do I connect Outlook or Google Calendar?">Wie verbinde ich Outlook oder Google Kalender?
+            <svg class="faq-chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-answer" data-de="In den App-Einstellungen können Nutzer ihr Google- oder Microsoft-Konto per OAuth2 verbinden. Danach werden Urlaubseinträge nach Genehmigung automatisch synchronisiert und Team-Einladungen versendet. Der OAuth2-Flow ist in der App vollständig implementiert." data-en="In the app settings, users can connect their Google or Microsoft account via OAuth2. After that, approved leave is automatically synced and team invitations are sent. The OAuth2 flow is fully implemented in the app.">In den Einstellungen können Nutzer ihr Google- oder Microsoft-Konto per OAuth2 verbinden. Danach werden Genehmigungen automatisch synchronisiert und Benachrichtigungen versendet.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" data-de="Welche Vorlagen-Formate werden unterstützt?" data-en="Which template formats are supported?">Welche Vorlagen-Formate werden unterstützt?
+            <svg class="faq-chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-answer" data-de="TRACE unterstützt DOCX- und AcroForm-PDF-Vorlagen. Eigene Vorlagen hochladen – TRACE befüllt die Felder automatisch (Mitarbeiternummer, Monat, Stunden, Überstunden)." data-en="TRACE supports DOCX and AcroForm PDF templates. Upload your own templates – TRACE auto-fills fields (employee number, month, hours, overtime).">TRACE unterstützt DOCX- und AcroForm-PDF-Vorlagen. Eigene Vorlagen hochladen – TRACE befüllt die Felder automatisch (Mitarbeiternummer, Monat, Stunden, Überstunden).</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" data-de="Was unterscheidet Lite von Pro?" data-en="What's the difference between Lite and Pro?">Was unterscheidet Lite von Pro?
+            <svg class="faq-chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-answer" data-de="Lite ist für Teams bis 50 Nutzer mit 1 Organisation – inklusive Wizard und Basis-Kalender, jedoch ohne AcroForm-PDF Vorlagen, automatischen E-Mail- oder Kalender-Sync. Pro hebt alle Grenzen auf: unbegrenzte Nutzer und Organisationen, AcroForm-PDF Vorlagen, OAuth2 E-Mail-Versand, Outlook- &amp; Google-Kalender-Sync, Admin-Panel, Berichte und Prioritäts-Support." data-en="Lite is for teams up to 50 users with 1 organisation – including wizard and basic calendar, but without AcroForm PDF templates, automatic email or calendar sync. Pro removes all limits: unlimited users and organisations, AcroForm PDF templates, OAuth2 email dispatch, Outlook &amp; Google calendar sync, admin panel, reports and priority support.">Lite: bis 25 Nutzer, 1 Org, Basis-Kalender, keine Export-Vorlagen, kein Auto-Sync. Pro: unbegrenzte Nutzer, DOCX/PDF-Vorlagen, OAuth2 E-Mail, Kalender-Sync, Admin, Berichte, Prioritäts-Support.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" data-de="Was ist das Innovation Package?" data-en="What is the Innovation Package?">Was ist das Innovation Package?
+            <svg class="faq-chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-answer" data-de="Das Innovation Package bündelt drei Apps: AWAY (Urlaubsplanung), TRACE (Zeiterfassung intern &amp; extern) und TeamRadar (Echtzeit-Verfügbarkeit &amp; Auslastung). TeamRadar dient als zentrale Plattform, in der AWAY und TRACE per App-Portal eingebettet sind oder direkt geöffnet werden können. Konditionen auf Anfrage." data-en="The Innovation Package bundles three apps: AWAY (leave management), TRACE (time tracking internal &amp; external) and TeamRadar (real-time availability &amp; capacity). TeamRadar serves as the central platform with AWAY and TRACE embedded via app portal or opened directly. Pricing on request.">Bundle aus TRACE (Zeiterfassung), AWAY (Urlaubsplanung) und TeamRadar (Verfügbarkeit &amp; Auslastung). TeamRadar ist die zentrale Plattform mit eingebettetem App-Portal.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" data-de="Wie lange dauert die Einrichtung?" data-en="How long does setup take?">Wie lange dauert die Einrichtung?
+            <svg class="faq-chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-answer" data-de="Für die Grundeinrichtung (Konto anlegen, Organisation erstellen, erste Vorlage hochladen) werden typischerweise unter 5 Minuten benötigt. Die Anbindung von Outlook oder Google Kalender per OAuth2 ist ein einmaliger Vorgang und dauert weitere 2–3 Minuten." data-en="Basic setup (create account, create organisation, upload first template) typically takes under 5 minutes. Connecting Outlook or Google Calendar via OAuth2 is a one-time step that takes another 2–3 minutes.">Grundeinrichtung unter 5 Minuten. OAuth2-Anbindung (Outlook/Google) einmalig 2–3 Minuten zusätzlich.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" data-de="Kann ich das Abo jederzeit kündigen?" data-en="Can I cancel the subscription anytime?">Kann ich das Abo jederzeit kündigen?
+            <svg class="faq-chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-answer" data-de="Ja. Pro-Abos können monatlich gekündigt werden – keine Mindestlaufzeit. Nach der Kündigung wird dein Account automatisch auf Free zurückgestuft." data-en="Yes. Pro subscriptions can be cancelled monthly – no minimum term. After cancellation, your account is automatically downgraded to Free.">Ja, monatlich kündbar ohne Mindestlaufzeit. Nach Kündigung automatische Rückstufung auf Free.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" data-de="Wird TRACE mobil unterstützt?" data-en="Is TRACE supported on mobile?">Wird TRACE mobil unterstützt?
+            <svg class="faq-chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="faq-answer" data-de="TRACE ist als responsive Web-App (Next.js) gebaut und auf Desktop, Tablet und Smartphone nutzbar. Eine native App ist in der Roadmap. Über das TeamRadar App-Portal ist TRACE auch direkt verfügbar." data-en="TRACE is built as a responsive web app (Next.js) and usable on desktop, tablet and smartphone. A native app is on the roadmap. Via the TeamRadar app portal, TRACE is also available directly.">TRACE ist eine responsive Web-App (Next.js) – nutzbar auf Desktop, Tablet und Smartphone. Native App in der Roadmap.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FINAL CTA ══════════════════════════════════════════════ -->
+  <section style="background:#0b1220;" class="py-28 relative overflow-hidden">
+    <div class="orb w-[500px] h-[500px] bg-blue-700/20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="max-w-4xl mx-auto px-5 text-center relative z-10 reveal">
+      <div class="text-blue-400 text-xs font-bold uppercase tracking-widest mb-5" data-de="Jetzt loslegen" data-en="Get started">Jetzt loslegen</div>
+      <h2 class="text-4xl md:text-6xl font-black text-white font-display tracking-tight mb-6"><span data-de="Bereit für strukturierte Zeiterfassung?" data-en="Ready for structured time tracking?">Bereit für strukturierte Zeiterfassung?</span></h2>
+      <p class="text-white/45 text-lg mb-10 max-w-xl mx-auto" data-de="Jetzt kostenlos starten – kein Excel, kein E-Mail-Chaos, kein manuelles Kalenderpflegen." data-en="Start free now – no Excel, no email chaos, no manual calendar maintenance.">Jetzt kostenlos starten – kein Excel, keine manuellen E-Mails, keine Zettelwirtschaft.</p>
+      <div class="flex flex-wrap items-center gap-4 justify-center">
+        <a href="https://app.trace.wamocon.de/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-2xl font-bold text-base transition-all shadow-xl shadow-blue-900/40 active:scale-95" data-de="Kostenlos starten" data-en="Start free">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <span data-de="Kostenlos starten" data-en="Start free">Kostenlos starten</span>
+        </a>
+        <a href="#showcase" class="inline-flex items-center gap-2 border border-white/15 hover:border-white/30 text-white/70 hover:text-white px-8 py-4 rounded-2xl font-bold text-base transition-all" data-de="App ansehen" data-en="See the app">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          <span data-de="App ansehen" data-en="See the app">App ansehen</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═════════════════════════════════════════════════ -->
+  <footer style="background:#04070d;border-top:1px solid rgba(255,255,255,0.06);" class="py-16">
+    <div class="max-w-7xl mx-auto px-5">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
+        <!-- Brand -->
+        <div class="col-span-2 md:col-span-1">
+          <div class="flex items-center gap-2.5 mb-5">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg>
+            </div>
+            <span class="text-lg font-black text-white font-display tracking-tight">TRACE</span>
+          </div>
+          <p class="text-white/30 text-sm leading-relaxed mb-5" data-de="Der intelligente Urlaubsplaner für moderne Teams. Entwickelt von WAMOCON." data-en="The intelligent leave planner for modern teams. Developed by WAMOCON.">Die intelligente Zeiterfassung für moderne Teams. Entwickelt von WAMOCON.</p>
+          <!-- Germany badge -->
+          <div class="flex items-center gap-2 text-white/25 text-xs font-semibold">
+            <span>🇩🇪</span>
+            <span data-de="Entwickelt in Deutschland" data-en="Made in Germany">Entwickelt in Deutschland</span>
+          </div>
+        </div>
+
+        <!-- Product -->
+        <div>
+          <h4 class="text-white/50 text-xs font-bold uppercase tracking-widest mb-5" data-de="Produkt" data-en="Product">Produkt</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#features" class="text-white/35 hover:text-white transition-colors" data-de="Features" data-en="Features">Features</a></li>
+            <li><a href="#how" class="text-white/35 hover:text-white transition-colors" data-de="Wie es funktioniert" data-en="How it works">Wie es funktioniert</a></li>
+            <li><a href="#roi" class="text-white/35 hover:text-white transition-colors" data-de="ROI Rechner" data-en="ROI Calculator">ROI Rechner</a></li>
+            <li><a href="#pricing" class="text-white/35 hover:text-white transition-colors" data-de="Preise" data-en="Pricing">Preise</a></li>
+            <li><a href="#faq" class="text-white/35 hover:text-white transition-colors">FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Produktfamilie -->
+        <div>
+          <h4 class="text-white/50 text-xs font-bold uppercase tracking-widest mb-5" data-de="Produktfamilie" data-en="Product family">Produktfamilie</h4>
+          <ul class="space-y-3 text-sm">
+            <li class="text-white/55 font-semibold flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-blue-500"></span>TRACE
+              <span class="text-[10px] text-blue-400/60 font-semibold ml-1" data-de="Zeiterfassung" data-en="Time tracking">Zeiterfassung</span>
+            </li>
+            <li class="text-white/35 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-indigo-500"></span>AWAY
+              <span class="text-[10px] text-indigo-400/60 font-semibold ml-1" data-de="Urlaubsplaner" data-en="Leave planner">Urlaubsplaner</span>
+            </li>
+            <li class="text-white/35 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-blue-500"></span>TeamRadar
+              <span class="text-[10px] text-blue-400/60 font-semibold ml-1" data-de="Verwaltung" data-en="Management">Verwaltung</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Rechtliches -->
+        <div>
+          <h4 class="text-white/50 text-xs font-bold uppercase tracking-widest mb-5" data-de="Rechtliches" data-en="Legal">Rechtliches</h4>
+          <ul class="space-y-3 text-sm">
+            <li><a href="impressum.html" class="text-white/35 hover:text-white transition-colors" data-de="Impressum" data-en="Imprint">Impressum</a></li>
+            <li><a href="datenschutz.html" class="text-white/35 hover:text-white transition-colors" data-de="Datenschutz" data-en="Privacy policy">Datenschutz</a></li>
+            <li><a href="agb.html" class="text-white/35 hover:text-white transition-colors" data-de="AGB" data-en="Terms">AGB</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="border-t border-white/6 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-white/20 text-xs" data-de="© 2026 TRACE. Ein Produkt der WAMOCON GmbH. Alle Rechte vorbehalten." data-en="© 2026 TRACE. A product of WAMOCON GmbH. All rights reserved.">© 2026 TRACE. Ein Produkt der WAMOCON GmbH. Alle Rechte vorbehalten.</p>
+        <div class="flex items-center gap-2 text-white/15 text-xs">
+          <svg class="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/></svg>
+          <span data-de="Alle Systeme betriebsbereit" data-en="All systems operational">Alle Systeme betriebsbereit</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ KONTAKTFORMULAR MODAL ════════════════════════════════ -->
+  <div id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"
+       class="fixed inset-0 z-[300] flex items-center justify-center p-4"
+       style="display:none; background:rgba(4,7,13,0.82); backdrop-filter:blur(10px);">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg" style="max-height:92vh;overflow-y:auto;">
+
+      <!-- Letterhead Header (WAMOCON-Stil) -->
+      <div class="flex items-start justify-between px-8 pt-7 pb-5 border-b border-slate-100">
+        <div>
+          <div class="flex items-center gap-2.5 mb-1.5">
+            <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/></svg>
+            </div>
+            <span class="font-black text-slate-900 font-display tracking-tight">TRACE</span>
+            <span class="text-slate-300 mx-1">|</span>
+            <span class="text-sm font-bold text-slate-500">WAMOCON GmbH</span>
+          </div>
+          <p class="text-xs text-slate-400 pl-9">Mergenthalerallee 79–81 · 65760 Eschborn</p>
+        </div>
+        <button onclick="closeContactModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-700 transition-colors shrink-0 mt-0.5" aria-label="Schließen">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Form Body -->
+      <div class="px-8 py-7">
+        <h3 id="modal-title" class="text-xl font-bold text-slate-900 font-display mb-1">Beratung anfragen</h3>
+        <p class="text-slate-400 text-sm mb-7">TRACE Innovation Package oder allgemeine Produktanfrage</p>
+
+        <form id="contact-form" onsubmit="submitContactForm(event)" novalidate class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5" for="cf-name">Name *</label>
+              <input id="cf-name" type="text" required autocomplete="name"
+                class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                placeholder="Max Müller">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5" for="cf-email">E-Mail *</label>
+              <input id="cf-email" type="email" required autocomplete="email"
+                class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                placeholder="max@unternehmen.de">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5" for="cf-company">Unternehmen</label>
+            <input id="cf-company" type="text" autocomplete="organization"
+              class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              placeholder="Musterfirma GmbH">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5" for="cf-subject">Betreff</label>
+            <select id="cf-subject"
+              class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white">
+              <option value="Innovation Package Anfrage">Innovation Package Anfrage</option>
+              <option value="TRACE Pro – Beratung">TRACE Pro – Beratung</option>
+              <option value="Demo anfragen">Demo anfragen</option>
+              <option value="Allgemeine Anfrage">Allgemeine Anfrage</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5" for="cf-message">Nachricht *</label>
+            <textarea id="cf-message" required rows="4"
+              class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+              placeholder="Wie können wir helfen? Anzahl Mitarbeiter, aktuelle Herausforderung ..."></textarea>
+          </div>
+
+          <div id="cf-error" class="hidden text-sm text-red-500 font-medium">Bitte Name, E-Mail und Nachricht ausfüllen.</div>
+
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-blue-100 active:scale-95 flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            Anfrage senden
+          </button>
+          <p class="text-center text-xs text-slate-400">Es öffnet sich dein E-Mail-Programm mit der vorausgefüllten Anfrage.</p>
+        </form>
+      </div>
     </div>
   </div>
-</section>
 
-<div class="divider"></div>
-
-<!-- ═══════════════════════════════════════════════════════════ -->
-<!-- FOOTER                                                       -->
-<!-- ═══════════════════════════════════════════════════════════ -->
-<footer id="footer" class="relative z-10 py-14 px-5">
-  <div class="max-w-6xl mx-auto">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-      <div class="col-span-2 md:col-span-1">
-        <div class="font-black text-xl mb-3 text-white" style="letter-spacing:-.04em;">TRACE</div>
-        <p class="text-sm leading-relaxed" style="color:#475569;">Zeiterfassung &amp; Genehmigungsmanagement.<br>Made by WAMOCON.</p>
-        <div class="mt-3 chip" style="width:fit-content;"><span class="green-dot"></span><span style="font-size:.65rem;">DSGVO-konform</span></div>
-      </div>
-      <div>
-        <p class="text-xs font-black tracking-widest uppercase mb-4" style="color:#334155;">Produkt</p>
-        <ul class="space-y-2">
-          <li><a href="#funktionen" class="text-sm transition-colors" style="color:#64748b;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">Funktionen</a></li>
-          <li><a href="#workflow" class="text-sm transition-colors" style="color:#64748b;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">Ablauf</a></li>
-          <li><a href="#preise" class="text-sm transition-colors" style="color:#64748b;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">Preise</a></li>
-          <li><a href="#faq" class="text-sm transition-colors" style="color:#64748b;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">FAQ</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="text-xs font-black tracking-widest uppercase mb-4" style="color:#334155;">Rechtliches</p>
-        <ul class="space-y-2">
-          <li><a href="impressum.html" class="text-sm" style="color:#64748b;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">Impressum</a></li>
-          <li><a href="datenschutz.html" class="text-sm" style="color:#64748b;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">Datenschutz</a></li>
-          <li><a href="agb.html" class="text-sm" style="color:#64748b;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">AGB</a></li>
-          <li><a href="cookies.html" class="text-sm" style="color:#64748b;" onmouseover="this.style.color='#f8fafc'" onmouseout="this.style.color='#64748b'">Cookies</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="text-xs font-black tracking-widest uppercase mb-4" style="color:#334155;">Tech-Stack</p>
-        <ul class="space-y-2">
-          <li><span class="text-sm" style="color:#334155;">Next.js 15 + React 19</span></li>
-          <li><span class="text-sm" style="color:#334155;">TypeScript · Tailwind CSS</span></li>
-          <li><span class="text-sm" style="color:#334155;">Supabase PostgreSQL</span></li>
-          <li><span class="text-sm" style="color:#334155;">Vercel (EU)</span></li>
-        </ul>
-      </div>
-    </div>
-    <div style="border-top:1px solid rgba(255,255,255,.05);padding-top:2rem;display:flex;flex-direction:column;gap:4px;" class="md:flex-row md:items-center md:justify-between">
-      <p class="text-xs" style="color:#1e293b;">© 2026 WAMOCON · Alle Rechte vorbehalten · Developed in Germany</p>
-      <p class="text-xs" style="color:#1e293b;">TRACE v2 · Powered by WAMOCON</p>
-    </div>
-  </div>
-</footer>
-
-<!-- Cookie Banner -->
-<div id="cookieBanner" class="cookie-banner" role="dialog" aria-label="Cookie-Einstellungen">
-  <div class="cookie-inner">
-    <p style="font-weight:700;font-size:.9rem;margin-bottom:5px;color:#111;">🍪 Cookies &amp; Datenschutz</p>
-    <p style="font-size:.78rem;color:#666;line-height:1.6;margin-bottom:14px;">
-      Wir verwenden ausschließlich technisch notwendige Cookies. Keine Tracking- oder Werbe-Cookies.
-      Mehr in unserer <a href="datenschutz.html" style="color:#ff1a1a;text-decoration:underline;">Datenschutzerklärung</a> und <a href="cookies.html" style="color:#ff1a1a;text-decoration:underline;">Cookie-Richtlinie</a>.
-    </p>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button id="cookieOk" style="padding:9px 20px;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;background:#ff1a1a;color:#fff;border:none;">Verstanden</button>
-      <button id="cookieNo" style="padding:9px 20px;border-radius:9px;font-size:.78rem;font-weight:600;cursor:pointer;background:#f0f0f0;color:#444;border:1px solid rgba(0,0,0,.08);">Ablehnen</button>
-    </div>
-  </div>
-</div>
-
-<!-- Back to Top -->
-<button class="btt" id="btt" aria-label="Zurück nach oben">
-  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
-</button>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
