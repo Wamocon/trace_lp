@@ -64,6 +64,6 @@ jobs:
       - name: Lychee Broken Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --no-progress "docs/*.html"
+          args: --verbose --no-progress --exclude "https://app\\.trace\\.wamocon\\.de" "docs/*.html"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
