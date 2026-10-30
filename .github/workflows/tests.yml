@@ -68,7 +68,7 @@ jobs:
 
       - name: Test-Artefakt hochladen (JUnit XML + HTML)
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: jest-regression-report
           path: |
